@@ -36,36 +36,55 @@ const letters = name.split('').map((ch) => (ch === ' ' ? ' ' : ch));
 
 		<div
 			id="menu-panel"
-			class="menu-panel absolute right-0 top-full z-40 mt-3 w-64 origin-top-right rounded-2xl border border-line bg-paper p-2 shadow-2xl"
+			class="menu-panel absolute right-0 top-full z-40 mt-3 w-72 origin-top-right overflow-hidden rounded-3xl border border-white/10 bg-paper/75 p-5 shadow-[0_0_80px_-20px_var(--color-accent)] backdrop-blur-xl"
 		>
-			{
-				links.map((link, i) => (
-					<a
-						href={link.href}
-						data-nav-link={link.href}
-						class="menu-link nav-link rounded-xl px-4 py-3 text-ink/80 hover:bg-ink/5 hover:text-accent"
-						style={`transition-delay: ${i * 60}ms`}
-					>
-						{link.label}
-					</a>
-				))
-			}
+			<div class="menu-stars pointer-events-none absolute inset-0"></div>
+			<div class="menu-glow-line absolute inset-x-5 top-0"></div>
+			<div class="menu-rail absolute left-[1.85rem] top-9 bottom-9 w-px"></div>
+			<ul class="relative flex flex-col gap-1">
+				{
+					links.map((link, i) => (
+						<li class="menu-link" style={`transition-delay: ${i * 70}ms`}>
+							<a
+								href={link.href}
+								data-nav-link={link.href}
+								class="nav-link group relative flex items-center gap-4 rounded-xl px-2 py-3.5 text-ink/80 transition-colors hover:bg-white/5 hover:text-accent"
+							>
+								<span class="menu-dot relative flex h-2.5 w-2.5 shrink-0 items-center justify-center rounded-full bg-ink/25 transition-colors group-hover:bg-accent">
+									<span class="absolute inline-flex h-full w-full rounded-full bg-accent opacity-0 group-hover:animate-ping" />
+								</span>
+								{link.label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
 		</div>
 	</nav>
 </header>
 
+<div
+	id="menu-backdrop"
+	class="menu-backdrop pointer-events-none fixed inset-0 z-30 bg-paper/60 opacity-0 backdrop-blur-sm transition-opacity duration-300"
+></div>
+
 <script>
 	const toggle = document.getElementById('menu-toggle');
 	const panel = document.getElementById('menu-panel');
+	const backdrop = document.getElementById('menu-backdrop');
 
 	function closeMenu() {
 		toggle?.setAttribute('aria-expanded', 'false');
 		panel?.classList.remove('is-open');
+		backdrop?.classList.remove('opacity-100');
+		backdrop?.classList.add('opacity-0', 'pointer-events-none');
 	}
 
 	function openMenu() {
 		toggle?.setAttribute('aria-expanded', 'true');
 		panel?.classList.add('is-open');
+		backdrop?.classList.add('opacity-100');
+		backdrop?.classList.remove('opacity-0', 'pointer-events-none');
 	}
 
 	toggle?.addEventListener('click', (event) => {

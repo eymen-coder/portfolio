@@ -8,6 +8,7 @@
 	--color-accent: #f0a94e;
 	--color-muted: #a39c8e;
 	--color-line: #2c2820;
+	--color-nebula: #8b8cf0;
 }
 
 body {
@@ -110,6 +111,11 @@ body {
 	transform: translateY(0) rotate(-45deg);
 }
 
+.menu-trigger[aria-expanded='true'] > span:last-child {
+	box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 30%, transparent);
+	border-color: transparent;
+}
+
 .menu-panel {
 	clip-path: circle(0% at 100% 0%);
 	opacity: 0;
@@ -123,12 +129,67 @@ body {
 	pointer-events: auto;
 }
 
+.menu-stars {
+	background-image: radial-gradient(circle, color-mix(in srgb, var(--color-ink) 70%, transparent) 1px, transparent 1px);
+	background-size: 18px 18px;
+	opacity: 0.07;
+	animation: stars-drift 30s linear infinite;
+}
+
+@keyframes stars-drift {
+	from {
+		background-position: 0 0;
+	}
+	to {
+		background-position: 90px 90px;
+	}
+}
+
+.menu-glow-line {
+	height: 1px;
+	background: linear-gradient(
+		90deg,
+		transparent,
+		var(--color-accent),
+		var(--color-nebula),
+		var(--color-accent),
+		transparent
+	);
+	background-size: 200% 100%;
+	animation: glow-shift 5s linear infinite;
+}
+
+@keyframes glow-shift {
+	to {
+		background-position: 200% 0%;
+	}
+}
+
+.menu-rail {
+	background: linear-gradient(
+		to bottom,
+		transparent,
+		color-mix(in srgb, var(--color-accent) 45%, transparent) 15%,
+		color-mix(in srgb, var(--color-nebula) 45%, transparent) 85%,
+		transparent
+	);
+}
+
+.menu-dot {
+	box-shadow: 0 0 0 0 transparent;
+	transition: background-color 0.2s ease, box-shadow 0.3s ease;
+}
+
+.nav-link:hover .menu-dot,
+.nav-link.is-active .menu-dot {
+	box-shadow: 0 0 12px 1px color-mix(in srgb, var(--color-accent) 70%, transparent);
+}
+
 .menu-link {
-	display: block;
 	opacity: 0;
 	transform: translateX(18px);
 	transition: opacity 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
-		transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease, color 0.2s ease;
+		transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .menu-panel.is-open .menu-link {
@@ -143,7 +204,9 @@ body {
 	.parallax,
 	.logo .letter,
 	.menu-panel,
-	.menu-link {
+	.menu-link,
+	.menu-stars,
+	.menu-glow-line {
 		animation: none !important;
 		transition: none !important;
 		transform: none !important;
