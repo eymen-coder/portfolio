@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Preloader from '../components/Preloader.astro';
 
 interface Props {
 	title?: string;
@@ -22,6 +23,7 @@ const {
 		<title>{title}</title>
 	</head>
 	<body class="bg-paper text-ink antialiased">
+		<Preloader />
 		<slot />
 		<script>
 			const observer = new IntersectionObserver(

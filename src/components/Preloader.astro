@@ -1,0 +1,178 @@
+---
+import { Image } from 'astro:assets';
+import portrait from '../assets/photos/portrait-rotterdam.jpeg';
+import avatar from '../assets/photos/avatar-selfie.jpeg';
+import nightWalk from '../assets/photos/night-walk.jpeg';
+import sport from '../assets/photos/hobbies/sport.jpg';
+import coding from '../assets/photos/hobbies/coding.jpg';
+import networking from '../assets/photos/hobbies/networking.jpg';
+import lesezirkel from '../assets/photos/hobbies/lesezirkel.jpg';
+
+const photos = [
+	{ src: portrait, x: '-13vw', y: '-10vh', r: '-10deg' },
+	{ src: avatar, x: '12vw', y: '-13vh', r: '8deg' },
+	{ src: nightWalk, x: '-15vw', y: '9vh', r: '11deg' },
+	{ src: sport, x: '14vw', y: '10vh', r: '-9deg' },
+	{ src: coding, x: '0vw', y: '-16vh', r: '4deg' },
+	{ src: networking, x: '-2vw', y: '14vh', r: '-14deg' },
+	{ src: lesezirkel, x: '16vw', y: '-1vh', r: '13deg' },
+];
+
+const tips = [
+	'Lade Skillpunkte...',
+	'Suche fehlendes Semikolon...',
+	'Kompiliere gute Laune...',
+	'Frage Stack Overflow...',
+	'Räume Merge-Konflikte auf...',
+	'Erhöhe Charisma-Wert...',
+	'Kaffee wird gebrüht...',
+	'Verbinde IT mit Business...',
+];
+---
+
+<div id="preloader" class="fixed inset-0 z-[999] flex flex-col items-center justify-center bg-paper">
+	<div class="preloader-stage relative h-[46vh] w-full max-w-md sm:h-[50vh]">
+		{
+			photos.map((photo, i) => (
+				<div
+					class="preloader-photo absolute left-1/2 top-1/2 h-16 w-16 sm:h-20 sm:w-20 md:h-24 md:w-24"
+					style={`--x: ${photo.x}; --y: ${photo.y}; --r: ${photo.r}; transition-delay: ${i * 40}ms`}
+				>
+					<Image
+						src={photo.src}
+						alt=""
+						width={160}
+						height={160}
+						loading="eager"
+						data-preload-img
+						class="h-full w-full rounded-2xl object-cover shadow-2xl ring-1 ring-white/10"
+					/>
+				</div>
+			))
+		}
+	</div>
+
+	<div class="absolute inset-x-0 bottom-0 flex flex-col items-center gap-4 px-6 pb-10 sm:pb-14">
+		<p id="preloader-tip" class="text-center text-sm font-medium text-ink/60">
+			<span class="text-accent">Tipp:</span> Lade Skillpunkte...
+		</p>
+		<div class="h-1 w-full max-w-xs overflow-hidden rounded-full bg-ink/10">
+			<div id="preloader-bar" class="h-full w-0 rounded-full bg-accent transition-[width] duration-300 ease-out"></div>
+		</div>
+		<p id="preloader-percent" class="font-mono text-3xl font-semibold tabular-nums text-ink sm:text-4xl">
+			0%
+		</p>
+	</div>
+</div>
+
+<noscript>
+	<style>
+		#preloader {
+			display: none;
+		}
+	</style>
+</noscript>
+
+<style>
+	.preloader-photo {
+		opacity: 0;
+		transform: translate(-50%, -50%) scale(0.2) rotate(0deg);
+		transition: transform 0.75s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
+	}
+
+	.preloader-photo.is-tossed {
+		opacity: 1;
+		transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1) rotate(var(--r));
+	}
+
+	#preloader {
+		transition: opacity 0.6s ease, visibility 0.6s ease;
+	}
+
+	#preloader.is-done {
+		opacity: 0;
+		visibility: hidden;
+		pointer-events: none;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.preloader-photo,
+		#preloader {
+			transition: opacity 0.3s ease !important;
+			transform: translate(-50%, -50%) !important;
+		}
+	}
+</style>
+
+<script>
+	const preloader = document.getElementById('preloader');
+	const tipEl = document.getElementById('preloader-tip');
+	const barEl = document.getElementById('preloader-bar');
+	const percentEl = document.getElementById('preloader-percent');
+
+	if (preloader && tipEl && barEl && percentEl) {
+		const tips = [
+			'Lade Skillpunkte...',
+			'Suche fehlendes Semikolon...',
+			'Kompiliere gute Laune...',
+			'Frage Stack Overflow...',
+			'Räume Merge-Konflikte auf...',
+			'Erhöhe Charisma-Wert...',
+			'Kaffee wird gebrüht...',
+			'Verbinde IT mit Business...',
+		];
+
+		document.body.classList.add('overflow-hidden');
+
+		let tipIndex = 0;
+		const tipInterval = setInterval(() => {
+			tipIndex = (tipIndex + 1) % tips.length;
+			tipEl.innerHTML = `<span class="text-accent">Tipp:</span> ${tips[tipIndex]}`;
+		}, 1000);
+
+		const photoImgs = Array.from(preloader.querySelectorAll<HTMLImageElement>('img[data-preload-img]'));
+		const total = photoImgs.length;
+		let loaded = 0;
+		const start = performance.now();
+		const minDuration = 1800;
+		let finished = false;
+
+		const updateProgress = () => {
+			const pct = Math.round((loaded / total) * 100);
+			percentEl.textContent = `${pct}%`;
+			barEl.style.width = `${pct}%`;
+		};
+
+		const markLoaded = (img: HTMLImageElement) => {
+			img.closest('.preloader-photo')?.classList.add('is-tossed');
+			loaded++;
+			updateProgress();
+			if (loaded >= total) finish();
+		};
+
+		const finish = () => {
+			if (finished) return;
+			finished = true;
+			const elapsed = performance.now() - start;
+			const wait = Math.max(0, minDuration - elapsed);
+			setTimeout(() => {
+				clearInterval(tipInterval);
+				percentEl.textContent = '100%';
+				barEl.style.width = '100%';
+				preloader.classList.add('is-done');
+				document.body.classList.remove('overflow-hidden');
+				setTimeout(() => preloader.remove(), 700);
+			}, wait);
+		};
+
+		photoImgs.forEach((img) => {
+			if (img.complete) markLoaded(img);
+			else {
+				img.addEventListener('load', () => markLoaded(img));
+				img.addEventListener('error', () => markLoaded(img));
+			}
+		});
+
+		setTimeout(() => finish(), 6000);
+	}
+</script>
