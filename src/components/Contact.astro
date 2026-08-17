@@ -1,0 +1,29 @@
+---
+const links = [
+	{ label: 'E-Mail', href: 'mailto:eymenguelmez@outlook.de' },
+	{ label: 'GitHub', href: 'https://github.com/eymen-coder' },
+	{ label: 'LinkedIn', href: 'https://www.linkedin.com/in/eymen-g%C3%BClmez-0669a9263/' },
+];
+---
+
+<section id="kontakt" class="reveal mx-auto max-w-5xl scroll-mt-24 px-6 py-24">
+	<div class="rounded-3xl bg-ink px-8 py-16 text-center sm:px-16">
+		<h2 class="text-3xl font-semibold tracking-tight text-paper sm:text-4xl">Lass uns reden.</h2>
+		<p class="mx-auto mt-4 max-w-xl text-paper/60">
+			Ob Praktikum, Werkstudentenstelle oder einfach ein spannendes Projekt — ich freue mich über
+			eine Nachricht. Versprochen: Antworten sind bei mir schneller als mancher Ladebildschirm.
+		</p>
+		<div class="mt-8 flex flex-wrap justify-center gap-4">
+			{
+				links.map((link) => (
+					<a
+						href={link.href}
+						class="rounded-full border border-paper/20 px-6 py-3 text-sm font-semibold text-paper transition-colors hover:border-accent hover:text-accent"
+					>
+						{link.label}
+					</a>
+				))
+			}
+		</div>
+	</div>
+</section>

@@ -1,0 +1,54 @@
+---
+import { Image } from 'astro:assets';
+import avatar from '../assets/photos/avatar-selfie.jpeg';
+
+const skills = [
+	'Java',
+	'JavaScript',
+	'HTML/CSS',
+	'SQL',
+	'ABAP',
+	'SAP ERP',
+	'Git',
+	'Projektmanagement',
+];
+---
+
+<section id="ueber-mich" class="reveal mx-auto max-w-5xl scroll-mt-24 px-6 py-24">
+	<div class="grid gap-12 sm:grid-cols-[auto_1fr] sm:items-start">
+		<Image
+			src={avatar}
+			alt="Eymen Gülmez"
+			width={112}
+			height={112}
+			class="h-28 w-28 shrink-0 rounded-full object-cover ring-2 ring-accent/30"
+		/>
+		<div>
+			<h2 class="text-3xl font-semibold tracking-tight text-ink">Über mich</h2>
+			<p class="mt-5 max-w-2xl text-ink/60">
+				Seit der 7. Klasse bin ich im Informatik-Modus — davor ging's erstmal ums Zocken, seitdem
+				lässt mich IT nicht mehr los, schulisch wie privat. Heute studiere ich
+				Wirtschaftsinformatik an der FH Dortmund, kurz vor dem Abschluss, und arbeite als
+				Werkstudent bei rabeconcept (Christmann &amp; Humpert GbR) in Bochum im Bereich
+				E-Commerce &amp; Shop-Optimierung — ich kümmere mich um Pflege, Weiterentwicklung und
+				technische Unterstützung von Online-Shops, Webseiten und digitalen Anwendungen.
+			</p>
+			<p class="mt-4 max-w-2xl text-ink/60">
+				Mein Ziel: die Schnittstelle zwischen IT und Business — Richtung IT-Beratung oder
+				IT-Projektmanagement. Ich mag es, technische Themen nicht nur zu verstehen, sondern auch
+				umzusetzen — und dabei möglichst nicht einzuschlafen vor Langeweile.
+			</p>
+		</div>
+	</div>
+
+	<div class="mt-16 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+		{
+			skills.map((skill, i) => (
+				<div class="bg-paper p-6">
+					<span class="text-xs font-medium text-accent">{String(i + 1).padStart(2, '0')}</span>
+					<p class="mt-2 font-medium text-ink">{skill}</p>
+				</div>
+			))
+		}
+	</div>
+</section>
