@@ -35,34 +35,39 @@ const {
 				},
 				{ threshold: 0.15 },
 			);
-			document.querySelectorAll('.reveal, .reveal-scale').forEach((el) => observer.observe(el));
+			document
+				.querySelectorAll('.reveal, .reveal-scale, .reveal-clip')
+				.forEach((el) => observer.observe(el));
 
-			const parallaxEls = Array.from(document.querySelectorAll<HTMLElement>('.parallax'));
 			const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+			const fxEls = Array.from(document.querySelectorAll<HTMLElement>('.scroll-fx'));
 
-			if (parallaxEls.length && !reduceMotion) {
-				let ticking = false;
-				const update = () => {
+			if (fxEls.length && !reduceMotion) {
+				let lastY = window.scrollY;
+				let lastT = performance.now();
+				let skew = 0;
+
+				const loop = (t: number) => {
+					const dt = Math.max(t - lastT, 1);
+					const dy = window.scrollY - lastY;
+					const velocity = dy / dt;
+					const targetSkew = Math.max(-6, Math.min(6, velocity * 14));
+					skew += (targetSkew - skew) * 0.12;
+					if (Math.abs(skew) < 0.03) skew = 0;
+
 					const viewportH = window.innerHeight;
-					for (const el of parallaxEls) {
+					for (const el of fxEls) {
 						const rect = el.getBoundingClientRect();
 						const progress = (rect.top + rect.height / 2 - viewportH / 2) / viewportH;
 						const offset = progress * -24;
-						el.style.transform = `translateY(${offset}px) scale(1.08)`;
+						el.style.transform = `translateY(${offset}px) skewY(${skew.toFixed(2)}deg) scale(1.1)`;
 					}
-					ticking = false;
+
+					lastY = window.scrollY;
+					lastT = t;
+					requestAnimationFrame(loop);
 				};
-				document.addEventListener(
-					'scroll',
-					() => {
-						if (!ticking) {
-							requestAnimationFrame(update);
-							ticking = true;
-						}
-					},
-					{ passive: true },
-				);
-				update();
+				requestAnimationFrame(loop);
 			}
 		</script>
 	</body>

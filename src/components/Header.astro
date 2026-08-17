@@ -4,103 +4,82 @@ const links = [
 	{ href: '#projekte', label: 'Projekte' },
 	{ href: '#kontakt', label: 'Kontakt' },
 ];
+
+const name = 'Eymen Gülmez';
+const letters = name.split('').map((ch) => (ch === ' ' ? ' ' : ch));
 ---
 
 <header class="sticky top-0 z-50 border-b border-line/80 bg-paper/85 backdrop-blur">
-	<nav class="mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
-		<a href="#" class="text-lg font-semibold tracking-tight text-ink">Eymen Gülmez</a>
-		<ul class="hidden gap-8 text-sm text-ink/70 sm:flex">
-			{
-				links.map((link) => (
-					<li>
-						<a href={link.href} class="nav-link transition-colors hover:text-accent" data-nav-link={link.href}>
-							{link.label}
-						</a>
-					</li>
-				))
-			}
-		</ul>
+	<nav class="relative mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
+		<a href="#" class="logo text-lg font-semibold tracking-tight text-ink">
+			{letters.map((ch, i) => (
+				<span class="letter" style={`transition-delay: ${i * 18}ms`}>
+					{ch}
+				</span>
+			))}
+		</a>
+
 		<button
 			id="menu-toggle"
 			type="button"
 			aria-label="Menü öffnen"
 			aria-expanded="false"
-			aria-controls="mobile-menu"
-			class="menu-button relative flex h-10 w-10 shrink-0 items-center justify-center sm:hidden"
+			aria-controls="menu-panel"
+			class="menu-trigger flex items-center gap-3 text-sm font-medium text-ink"
 		>
-			<span class="bar bar-1 absolute h-px w-6 bg-ink transition-transform duration-300"></span>
-			<span class="bar bar-2 absolute h-px w-6 bg-ink transition-opacity duration-300"></span>
-			<span class="bar bar-3 absolute h-px w-6 bg-ink transition-transform duration-300"></span>
+			<span class="hidden sm:inline">Menü</span>
+			<span class="relative flex h-9 w-9 items-center justify-center rounded-full border border-line">
+				<span class="bar bar-1"></span>
+				<span class="bar bar-2"></span>
+			</span>
 		</button>
+
+		<div
+			id="menu-panel"
+			class="menu-panel absolute right-0 top-full z-40 mt-3 w-64 origin-top-right rounded-2xl border border-line bg-paper p-2 shadow-2xl"
+		>
+			{
+				links.map((link, i) => (
+					<a
+						href={link.href}
+						data-nav-link={link.href}
+						class="menu-link nav-link rounded-xl px-4 py-3 text-ink/80 hover:bg-ink/5 hover:text-accent"
+						style={`transition-delay: ${i * 60}ms`}
+					>
+						{link.label}
+					</a>
+				))
+			}
+		</div>
 	</nav>
 </header>
 
-<div
-	id="mobile-menu"
-	class="fixed inset-0 z-40 flex flex-col items-center justify-center gap-10 bg-paper opacity-0 pointer-events-none transition-all duration-300 sm:hidden"
->
-	{
-		links.map((link) => (
-			<a
-				href={link.href}
-				class="mobile-link text-3xl font-semibold tracking-tight text-ink transition-colors hover:text-accent"
-			>
-				{link.label}
-			</a>
-		))
-	}
-</div>
-
-<style>
-	.menu-button[aria-expanded='true'] .bar-1 {
-		transform: translateY(0) rotate(45deg);
-	}
-	.menu-button[aria-expanded='true'] .bar-2 {
-		opacity: 0;
-	}
-	.menu-button[aria-expanded='true'] .bar-3 {
-		transform: translateY(0) rotate(-45deg);
-	}
-	.menu-button:not([aria-expanded='true']) .bar-1 {
-		transform: translateY(-6px);
-	}
-	.menu-button:not([aria-expanded='true']) .bar-3 {
-		transform: translateY(6px);
-	}
-	#mobile-menu {
-		scale: 0.95;
-	}
-	#mobile-menu.is-open {
-		opacity: 1;
-		pointer-events: auto;
-		scale: 1;
-	}
-</style>
-
 <script>
 	const toggle = document.getElementById('menu-toggle');
-	const menu = document.getElementById('mobile-menu');
-	const mobileLinks = document.querySelectorAll('.mobile-link');
+	const panel = document.getElementById('menu-panel');
 
 	function closeMenu() {
 		toggle?.setAttribute('aria-expanded', 'false');
-		menu?.classList.remove('is-open');
-		document.body.classList.remove('overflow-hidden');
+		panel?.classList.remove('is-open');
 	}
 
 	function openMenu() {
 		toggle?.setAttribute('aria-expanded', 'true');
-		menu?.classList.add('is-open');
-		document.body.classList.add('overflow-hidden');
+		panel?.classList.add('is-open');
 	}
 
-	toggle?.addEventListener('click', () => {
+	toggle?.addEventListener('click', (event) => {
+		event.stopPropagation();
 		const isOpen = toggle.getAttribute('aria-expanded') === 'true';
 		if (isOpen) closeMenu();
 		else openMenu();
 	});
 
-	mobileLinks.forEach((link) => link.addEventListener('click', closeMenu));
+	panel?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+
+	document.addEventListener('click', (event) => {
+		if (!panel?.contains(event.target as Node) && event.target !== toggle) closeMenu();
+	});
 
 	document.addEventListener('keydown', (event) => {
 		if (event.key === 'Escape') closeMenu();
