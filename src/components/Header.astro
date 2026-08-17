@@ -9,7 +9,7 @@ const links = [
 <header class="sticky top-0 z-50 border-b border-line/80 bg-paper/85 backdrop-blur">
 	<nav class="mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
 		<a href="#" class="text-lg font-semibold tracking-tight text-ink">Eymen Gülmez</a>
-		<ul class="flex gap-8 text-sm text-ink/70">
+		<ul class="hidden gap-8 text-sm text-ink/70 sm:flex">
 			{
 				links.map((link) => (
 					<li>
@@ -20,5 +20,89 @@ const links = [
 				))
 			}
 		</ul>
+		<button
+			id="menu-toggle"
+			type="button"
+			aria-label="Menü öffnen"
+			aria-expanded="false"
+			aria-controls="mobile-menu"
+			class="menu-button relative flex h-10 w-10 shrink-0 items-center justify-center sm:hidden"
+		>
+			<span class="bar bar-1 absolute h-px w-6 bg-ink transition-transform duration-300"></span>
+			<span class="bar bar-2 absolute h-px w-6 bg-ink transition-opacity duration-300"></span>
+			<span class="bar bar-3 absolute h-px w-6 bg-ink transition-transform duration-300"></span>
+		</button>
 	</nav>
 </header>
+
+<div
+	id="mobile-menu"
+	class="fixed inset-0 z-40 flex flex-col items-center justify-center gap-10 bg-paper opacity-0 pointer-events-none transition-all duration-300 sm:hidden"
+>
+	{
+		links.map((link) => (
+			<a
+				href={link.href}
+				class="mobile-link text-3xl font-semibold tracking-tight text-ink transition-colors hover:text-accent"
+			>
+				{link.label}
+			</a>
+		))
+	}
+</div>
+
+<style>
+	.menu-button[aria-expanded='true'] .bar-1 {
+		transform: translateY(0) rotate(45deg);
+	}
+	.menu-button[aria-expanded='true'] .bar-2 {
+		opacity: 0;
+	}
+	.menu-button[aria-expanded='true'] .bar-3 {
+		transform: translateY(0) rotate(-45deg);
+	}
+	.menu-button:not([aria-expanded='true']) .bar-1 {
+		transform: translateY(-6px);
+	}
+	.menu-button:not([aria-expanded='true']) .bar-3 {
+		transform: translateY(6px);
+	}
+	#mobile-menu {
+		scale: 0.95;
+	}
+	#mobile-menu.is-open {
+		opacity: 1;
+		pointer-events: auto;
+		scale: 1;
+	}
+</style>
+
+<script>
+	const toggle = document.getElementById('menu-toggle');
+	const menu = document.getElementById('mobile-menu');
+	const mobileLinks = document.querySelectorAll('.mobile-link');
+
+	function closeMenu() {
+		toggle?.setAttribute('aria-expanded', 'false');
+		menu?.classList.remove('is-open');
+		document.body.classList.remove('overflow-hidden');
+	}
+
+	function openMenu() {
+		toggle?.setAttribute('aria-expanded', 'true');
+		menu?.classList.add('is-open');
+		document.body.classList.add('overflow-hidden');
+	}
+
+	toggle?.addEventListener('click', () => {
+		const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+		if (isOpen) closeMenu();
+		else openMenu();
+	});
+
+	mobileLinks.forEach((link) => link.addEventListener('click', closeMenu));
+
+	document.addEventListener('keydown', (event) => {
+		if (event.key === 'Escape') closeMenu();
+	});
+</script>

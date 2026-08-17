@@ -3,14 +3,14 @@ import { Image } from 'astro:assets';
 import avatar from '../assets/photos/avatar-selfie.jpeg';
 
 const skills = [
-	'Java',
-	'JavaScript',
-	'HTML/CSS',
-	'SQL',
-	'ABAP',
-	'SAP ERP',
-	'Git',
-	'Projektmanagement',
+	{ name: 'Java', level: 4 },
+	{ name: 'JavaScript', level: 5 },
+	{ name: 'HTML/CSS', level: 4 },
+	{ name: 'SQL', level: 4 },
+	{ name: 'ABAP', level: 2 },
+	{ name: 'SAP ERP', level: 4 },
+	{ name: 'Git', level: 3 },
+	{ name: 'Projektmanagement', level: 5 },
 ];
 ---
 
@@ -41,12 +41,21 @@ const skills = [
 		</div>
 	</div>
 
-	<div class="mt-16 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+	<div class="mt-16 sm:columns-2 sm:gap-x-12">
 		{
 			skills.map((skill, i) => (
-				<div class="bg-paper p-6">
-					<span class="text-xs font-medium text-accent">{String(i + 1).padStart(2, '0')}</span>
-					<p class="mt-2 font-medium text-ink">{skill}</p>
+				<div class="flex items-center justify-between gap-4 border-b border-line py-4 [break-inside:avoid]">
+					<div class="flex items-baseline gap-4">
+						<span class="text-xs font-medium text-accent">{String(i + 1).padStart(2, '0')}</span>
+						<span class="font-medium text-ink">{skill.name}</span>
+					</div>
+					<div class="flex shrink-0 gap-1.5">
+						{Array.from({ length: 5 }).map((_, dot) => (
+							<span
+								class={`h-1.5 w-1.5 rounded-full ${dot < skill.level ? 'bg-accent' : 'bg-ink/15'}`}
+							/>
+						))}
+					</div>
 				</div>
 			))
 		}
