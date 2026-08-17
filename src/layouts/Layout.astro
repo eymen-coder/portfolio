@@ -35,7 +35,35 @@ const {
 				},
 				{ threshold: 0.15 },
 			);
-			document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+			document.querySelectorAll('.reveal, .reveal-scale').forEach((el) => observer.observe(el));
+
+			const parallaxEls = Array.from(document.querySelectorAll<HTMLElement>('.parallax'));
+			const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+			if (parallaxEls.length && !reduceMotion) {
+				let ticking = false;
+				const update = () => {
+					const viewportH = window.innerHeight;
+					for (const el of parallaxEls) {
+						const rect = el.getBoundingClientRect();
+						const progress = (rect.top + rect.height / 2 - viewportH / 2) / viewportH;
+						const offset = progress * -24;
+						el.style.transform = `translateY(${offset}px) scale(1.08)`;
+					}
+					ticking = false;
+				};
+				document.addEventListener(
+					'scroll',
+					() => {
+						if (!ticking) {
+							requestAnimationFrame(update);
+							ticking = true;
+						}
+					},
+					{ passive: true },
+				);
+				update();
+			}
 		</script>
 	</body>
 </html>

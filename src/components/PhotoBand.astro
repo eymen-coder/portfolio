@@ -3,15 +3,18 @@ import { Image } from 'astro:assets';
 import nightWalk from '../assets/photos/night-walk.jpeg';
 ---
 
-<section class="reveal mx-auto max-w-5xl px-6">
+<section class="reveal-scale mx-auto max-w-5xl px-6">
 	<div class="relative overflow-hidden rounded-[1.75rem]">
 		<Image
 			src={nightWalk}
 			alt="Eymen Gülmez"
 			width={1200}
 			height={500}
-			class="h-64 w-full object-cover object-[50%_25%] sm:h-80"
+			class="parallax h-64 w-full object-cover object-[50%_25%] sm:h-80"
 		/>
 		<div class="absolute inset-0 bg-gradient-to-t from-paper via-paper/10 to-transparent"></div>
+		<p class="absolute bottom-6 left-6 text-sm font-medium text-ink/80 sm:bottom-8 sm:left-8">
+			Und wenn der Laptop mal zu bleibt...
+		</p>
 	</div>
 </section>
