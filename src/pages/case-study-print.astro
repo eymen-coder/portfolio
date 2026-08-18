@@ -1,0 +1,203 @@
+---
+import '../styles/global.css';
+import {
+	meta,
+	facts,
+	methods,
+	approach,
+	weaknesses,
+	risks,
+	stakeholders,
+	results,
+	reflexion,
+	ausgangslage,
+	sollText,
+} from '../data/case-study';
+
+const toc = [
+	{ title: 'Ausgangslage', page: 3 },
+	{ title: 'Mein Vorgehen', page: 3 },
+	{ title: 'Ist-Prozess', page: 4 },
+	{ title: 'Schwachstellen', page: 5 },
+	{ title: 'Soll-Konzept', page: 6 },
+	{ title: 'Projektplanung', page: 7 },
+	{ title: 'Risikomatrix', page: 8 },
+	{ title: 'Stakeholder-Analyse', page: 9 },
+	{ title: 'Erwarteter Nutzen', page: 10 },
+	{ title: 'Was ich daraus mitnehme', page: 10 },
+];
+---
+
+<html lang="de">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="robots" content="noindex, nofollow" />
+		<title>{meta.title}</title>
+	</head>
+	<body class="m-0 bg-[#fdfbf8] text-[#15130f]">
+		<!-- Cover -->
+		<section>
+			<div class="flex items-center gap-2 text-sm font-semibold text-[#c8834a]">
+				<span class="h-2 w-2 rounded-full bg-[#c8834a]"></span>
+				KONZEPTSTUDIE · FIKTIVES FALLBEISPIEL
+			</div>
+			<div class="mt-4 h-1 w-16 rounded-full bg-[#c8834a]"></div>
+			<h1 class="mt-10 max-w-2xl text-5xl font-semibold leading-[1.12] tracking-tight text-[#15130f]">
+				{meta.title}
+			</h1>
+			<p class="mt-6 max-w-xl text-lg leading-relaxed text-[#6b6b68]">{meta.subtitle}</p>
+			<div class="mt-8 flex flex-wrap gap-2">
+				{methods.map((m) => <span class="rounded-full bg-[#f1ede4] px-3 py-1 text-xs text-[#6b6b68]">{m}</span>)}
+			</div>
+
+			<div class="mt-16 grid grid-cols-4 gap-4 border-t border-[#e5e2dc] pt-8">
+				{
+					facts.map((f) => (
+						<div>
+							<p class="text-xl font-semibold text-[#c8834a]">{f.value}</p>
+							<p class="mt-1 text-xs text-[#6b6b68]">{f.label}</p>
+						</div>
+					))
+				}
+			</div>
+
+			<div class="mt-24 flex items-end justify-between border-t border-[#e5e2dc] pt-6">
+				<div>
+					<p class="text-base font-semibold text-[#15130f]">{meta.author}</p>
+					<p class="text-sm text-[#6b6b68]">Wirtschaftsinformatik · FH Dortmund</p>
+				</div>
+				<p class="text-sm text-[#6b6b68]">{meta.date}</p>
+			</div>
+		</section>
+
+		<!-- TOC -->
+		<section class="break-before-page">
+			<h2 class="text-3xl font-semibold tracking-tight text-[#15130f]">Inhaltsverzeichnis</h2>
+			<ul class="mt-10 flex flex-col gap-4">
+				{
+					toc.map((item) => (
+						<li class="flex items-baseline gap-3">
+							<span class="whitespace-nowrap text-[#15130f]">{item.title}</span>
+							<span class="flex-1 border-b border-dotted border-[#c8c2b4]" />
+							<span class="whitespace-nowrap text-[#6b6b68]">{item.page}</span>
+						</li>
+					))
+				}
+			</ul>
+			<p class="mt-16 max-w-md text-xs leading-relaxed text-[#6b6b68]">
+				Fiktives Fallbeispiel zur Veranschaulichung von Vorgehen und Methodik. Unternehmen und
+				Kennzahlen sind frei erfunden.
+			</p>
+		</section>
+
+		<!-- Ausgangslage + Vorgehen -->
+		<section class="break-before-page">
+			<h2 class="text-2xl font-semibold tracking-tight text-[#15130f]">Ausgangslage</h2>
+			<p class="mt-4 max-w-3xl leading-relaxed text-[#3a362e]">{ausgangslage}</p>
+
+			<h2 class="mt-12 text-2xl font-semibold tracking-tight text-[#15130f]">Mein Vorgehen</h2>
+			<p class="mt-4 text-[#6b6b68]">Vier Schritte, bevor überhaupt über konkrete Systemkonfiguration gesprochen wird.</p>
+			<div class="mt-8 grid grid-cols-2 gap-8">
+				{
+					approach.map((step, i) => (
+						<div>
+							<span class="text-xs font-semibold text-[#c8834a]">{String(i + 1).padStart(2, '0')}</span>
+							<h3 class="mt-2 font-semibold text-[#15130f]">{step.title}</h3>
+							<p class="mt-2 text-sm leading-relaxed text-[#6b6b68]">{step.text}</p>
+						</div>
+					))
+				}
+			</div>
+		</section>
+
+		<!-- Ist-Prozess -->
+		<section class="break-before-page">
+			<h2 class="text-2xl font-semibold tracking-tight text-[#15130f]">Ist-Prozess</h2>
+			<p class="mt-4 text-[#6b6b68]">Der aktuelle Beschaffungsprozess, Schritt für Schritt.</p>
+			<img src="/diagram-ist-prozess.png" alt="Ist-Prozess Flowchart" class="mx-auto mt-6 h-auto max-h-[190mm] w-auto" />
+		</section>
+
+		<!-- Schwachstellen -->
+		<section class="break-before-page">
+			<h2 class="text-2xl font-semibold tracking-tight text-[#15130f]">Schwachstellen</h2>
+			<ul class="mt-8 grid grid-cols-2 gap-4">
+				{weaknesses.map((item) => <li class="rounded-xl border border-[#e5e2dc] p-5 text-[#3a362e]">{item}</li>)}
+			</ul>
+		</section>
+
+		<!-- Soll-Konzept -->
+		<section class="break-before-page">
+			<h2 class="text-2xl font-semibold tracking-tight text-[#15130f]">Soll-Konzept</h2>
+			<p class="mt-4 max-w-3xl leading-relaxed text-[#3a362e]">{sollText}</p>
+			<img src="/diagram-soll-konzept.png" alt="Soll-Konzept Flowchart" class="mx-auto mt-6 h-auto max-h-[180mm] w-auto" />
+		</section>
+
+		<!-- Projektplanung -->
+		<section class="break-before-page">
+			<h2 class="text-2xl font-semibold tracking-tight text-[#15130f]">Projektplanung</h2>
+			<p class="mt-4 text-[#6b6b68]">Grobplanung über sechs Phasen, von der Analyse bis zur Hypercare-Phase nach Go-Live.</p>
+			<img src="/diagram-projektplanung.png" alt="Projektplan Gantt-Chart" class="mt-6 h-auto w-full" />
+		</section>
+
+		<!-- Risikomatrix -->
+		<section class="break-before-page">
+			<h2 class="text-2xl font-semibold tracking-tight text-[#15130f]">Risikomatrix</h2>
+			<table class="mt-8 w-full text-left text-sm">
+				<thead>
+					<tr class="border-b border-[#c8c2b4] text-[#6b6b68]">
+						<th class="py-3 pr-4 font-medium">Risiko</th>
+						<th class="py-3 pr-4 font-medium">Wahrsch.</th>
+						<th class="py-3 pr-4 font-medium">Auswirkung</th>
+						<th class="py-3 font-medium">Gegenmaßnahme</th>
+					</tr>
+				</thead>
+				<tbody>
+					{
+						risks.map((r) => (
+							<tr class="border-b border-[#e5e2dc]">
+								<td class="py-3 pr-4 align-top">{r.risk}</td>
+								<td class="py-3 pr-4 align-top text-[#3a362e]">{r.probability}</td>
+								<td class="py-3 pr-4 align-top text-[#3a362e]">{r.impact}</td>
+								<td class="py-3 align-top text-[#6b6b68]">{r.mitigation}</td>
+							</tr>
+						))
+					}
+				</tbody>
+			</table>
+		</section>
+
+		<!-- Stakeholder -->
+		<section class="break-before-page">
+			<h2 class="text-2xl font-semibold tracking-tight text-[#15130f]">Stakeholder-Analyse</h2>
+			<div class="mt-8 grid grid-cols-2 gap-4">
+				{
+					stakeholders.map((s) => (
+						<div class="rounded-xl border border-[#e5e2dc] p-5">
+							<p class="text-xs font-semibold text-[#c8834a]">{s.quadrant}</p>
+							<p class="mt-2 text-[#3a362e]">{s.people}</p>
+						</div>
+					))
+				}
+			</div>
+		</section>
+
+		<!-- Nutzen + Reflexion -->
+		<section class="break-before-page">
+			<h2 class="text-2xl font-semibold tracking-tight text-[#15130f]">Erwarteter Nutzen</h2>
+			<p class="mt-2 text-sm text-[#6b6b68]">Geschätzte Werte für dieses fiktive Fallbeispiel, keine belegten Praxiszahlen.</p>
+			<div class="mt-8 grid grid-cols-3 gap-6">
+				{
+					results.map((r) => (
+						<div class="rounded-xl border border-[#e5e2dc] p-6 text-center">
+							<p class="text-2xl font-semibold text-[#c8834a]">{r.value}</p>
+							<p class="mt-2 text-sm text-[#6b6b68]">{r.label}</p>
+						</div>
+					))
+				}
+			</div>
+
+			<h2 class="mt-16 text-2xl font-semibold tracking-tight text-[#15130f]">Was ich daraus mitnehme</h2>
+			<p class="mt-4 max-w-3xl leading-relaxed text-[#3a362e]">{reflexion}</p>
+		</section>
+	</body>
+</html>

@@ -1,0 +1,61 @@
+---
+interface Props {
+	code: string;
+	id: string;
+}
+
+const { code, id } = Astro.props;
+---
+
+<div class="mermaid-wrap rounded-xl border border-[#e5e2dc] bg-[#fdfbf8] p-5">
+	<pre class="mermaid" id={id}>{code}</pre>
+</div>
+
+<script>
+	import mermaid from 'mermaid';
+
+	mermaid.initialize({
+		startOnLoad: false,
+		theme: 'base',
+		themeVariables: {
+			darkMode: false,
+			background: '#fdfbf8',
+			primaryColor: '#fdfbf8',
+			primaryTextColor: '#15130f',
+			primaryBorderColor: '#c8834a',
+			lineColor: '#6b6b68',
+			secondaryColor: '#f1ede4',
+			tertiaryColor: '#f1ede4',
+			fontFamily: 'Arial, Helvetica, sans-serif',
+			mainBkg: '#fdfbf8',
+			nodeTextColor: '#15130f',
+			edgeLabelBackground: '#fdfbf8',
+			clusterBkg: '#f1ede4',
+			clusterBorder: '#e5e2dc',
+			todayLineColor: '#c8834a',
+			taskTextColor: '#15130f',
+			taskTextOutsideColor: '#15130f',
+			taskBkgColor: '#f0a94e',
+			taskBorderColor: '#c8834a',
+			activeTaskBkgColor: '#8b8cf0',
+			activeTaskBorderColor: '#6f6fd6',
+			gridColor: '#e5e2dc',
+			sectionBkgColor: '#f1ede4',
+			sectionBkgColor2: '#f8f6f0',
+		},
+		securityLevel: 'strict',
+	});
+
+	async function renderMermaid() {
+		const nodes = document.querySelectorAll('pre.mermaid');
+		if (nodes.length) {
+			await mermaid.run({ nodes: nodes as unknown as NodeListOf<HTMLElement> });
+		}
+	}
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', renderMermaid);
+	} else {
+		renderMermaid();
+	}
+</script>

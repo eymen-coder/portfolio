@@ -3,135 +3,21 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import MermaidDiagram from '../components/MermaidDiagram.astro';
-
-const istProcess = `flowchart TD
-	A["Einkauf erstellt Bestellung in Excel"] --> B["Bestellung per E-Mail an Lieferant"]
-	B --> C["Wareneingang wird manuell im Lager erfasst"]
-	C --> D["Rechnung trifft separat per E-Mail ein"]
-	D --> E["Manueller Abgleich: Bestellung, Wareneingang, Rechnung"]
-	E --> F{"Abweichung?"}
-	F -->|Ja| G["Rueckfrage beim Lieferanten"]
-	F -->|Nein| H["Manuelle Buchung in Rechnungssoftware"]
-	G --> E
-	H --> I["Monatsabschluss mit Verzoegerung"]`;
-
-const sollProcess = `flowchart TD
-	A2["Einkauf erstellt Bestellung in SAP MM"] --> B2["Bestellung automatisch an Lieferant"]
-	B2 --> C2["Wareneingang direkt in SAP erfasst"]
-	C2 --> D2["Rechnung ueber Eingangsrechnungs-Workflow erfasst"]
-	D2 --> E2["Automatischer 3-Way-Match"]
-	E2 --> F2{"Abweichung?"}
-	F2 -->|Ja| G2["Automatische Eskalation an Einkauf"]
-	F2 -->|Nein| H2["Automatische Buchung in FI"]
-	H2 --> I2["Echtzeit-Reporting, puenktlicher Abschluss"]`;
-
-const gantt = `gantt
-	title Projektplan SAP S/4HANA-Einfuehrung
-	dateFormat YYYY-MM-DD
-	section Analyse & Konzeption
-	Ist-Analyse & Anforderungen      :a1, 2026-02-02, 15d
-	Fit-Gap-Analyse                  :a2, after a1, 10d
-	section Realisierung
-	Systemkonfiguration              :b1, after a2, 20d
-	Schnittstellen & Migration       :b2, after b1, 15d
-	section Test & Schulung
-	Integrationstests                :c1, after b2, 10d
-	Anwenderschulung                 :c2, after c1, 10d
-	section Go-Live
-	Go-Live                          :milestone, d1, after c2, 0d
-	Hypercare-Phase                  :d2, after d1, 15d`;
-
-const facts = [
-	{ value: '150', label: 'Mitarbeitende' },
-	{ value: '3', label: 'getrennte Systeme im Ist-Zustand' },
-	{ value: '~13 Wochen', label: 'geplante Projektlaufzeit' },
-	{ value: '5', label: 'identifizierte Risiken' },
-];
-
-const methods = [
-	'Prozessmodellierung',
-	'Fit-Gap-Analyse',
-	'Risikomanagement',
-	'Stakeholder-Analyse',
-	'Projektplanung',
-];
-
-const approach = [
-	{
-		title: 'Anforderungen aufnehmen',
-		text: '(Fiktive) Gespräche mit Einkauf, Lager und Buchhaltung, um die tatsächlichen Pain Points zu verstehen, nicht nur die vermuteten.',
-	},
-	{
-		title: 'Ist-Prozess modellieren',
-		text: 'Den bestehenden Ablauf als Flowchart dokumentieren, um Medienbrüche und Schwachstellen sichtbar zu machen.',
-	},
-	{
-		title: 'Fit-Gap-Analyse',
-		text: 'Abgleich zwischen den Anforderungen und dem SAP-Standard, um zu klären, wo Customizing wirklich nötig ist.',
-	},
-	{
-		title: 'Konzept & Planung',
-		text: 'Soll-Prozess, Zeitplan, Risiken und Stakeholder definieren, bevor die eigentliche Umsetzung beginnt.',
-	},
-];
-
-const risks = [
-	{
-		risk: 'Datenmigrationsfehler bei Bestands- und Stammdaten',
-		probability: 'Mittel',
-		impact: 'Hoch',
-		mitigation: 'Frühzeitige Datenbereinigung, mehrere Test-Migrationen vor Go-Live',
-	},
-	{
-		risk: 'Akzeptanzprobleme bei Mitarbeitenden',
-		probability: 'Hoch',
-		impact: 'Mittel',
-		mitigation: 'Frühe Einbindung der Fachbereiche, Key-User-Konzept, gezielte Schulungen',
-	},
-	{
-		risk: 'Verzögerung durch Schnittstellenprobleme',
-		probability: 'Mittel',
-		impact: 'Mittel',
-		mitigation: 'Frühzeitige Schnittstellentests, Zeitpuffer im Projektplan',
-	},
-	{
-		risk: 'Budgetüberschreitung',
-		probability: 'Niedrig',
-		impact: 'Hoch',
-		mitigation: 'Klarer Change-Request-Prozess, Budgetreserve einplanen',
-	},
-	{
-		risk: 'Störung von Kernprozessen während Go-Live',
-		probability: 'Niedrig',
-		impact: 'Hoch',
-		mitigation: 'Hypercare-Phase, Rollback-Plan, Go-Live in prozessarmem Zeitraum',
-	},
-];
-
-const stakeholders = [
-	{
-		quadrant: 'Hohe Macht · Hohes Interesse',
-		people: 'Geschäftsführung, Projektleitung IT',
-	},
-	{
-		quadrant: 'Hohe Macht · Niedriges Interesse',
-		people: 'IT-Infrastruktur, externer SAP-Berater',
-	},
-	{
-		quadrant: 'Niedrige Macht · Hohes Interesse',
-		people: 'Einkauf, Lager, Buchhaltung (Endanwender)',
-	},
-	{
-		quadrant: 'Niedrige Macht · Niedriges Interesse',
-		people: 'Externe Lieferanten',
-	},
-];
-
-const results = [
-	{ value: '−40%', label: 'geschätzte manuelle Bearbeitungszeit beim Rechnungsabgleich' },
-	{ value: 'Echtzeit', label: 'Bestandstransparenz statt tagesaktueller Excel-Listen' },
-	{ value: '−5 Tage', label: 'geschätzte Verkürzung des Monatsabschlusses' },
-];
+import {
+	istProcess,
+	sollProcess,
+	gantt,
+	facts,
+	methods,
+	approach,
+	weaknesses,
+	risks,
+	stakeholders,
+	results,
+	reflexion,
+	ausgangslage,
+	sollText,
+} from '../data/case-study';
 
 const jumpLinks = [
 	{ href: '#ausgangslage', label: 'Ausgangslage' },
@@ -185,6 +71,25 @@ const jumpLinks = [
 					))
 				}
 			</div>
+
+			<a
+				href="/sap-case-study.pdf"
+				download
+				class="mt-8 flex items-center justify-between gap-4 rounded-2xl border border-line bg-ink/[0.03] p-5 transition-colors hover:border-accent/40"
+			>
+				<span class="flex items-center gap-4">
+					<span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-accent/10 text-accent">
+						<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+							<path d="M12 3v12m0 0-4-4m4 4 4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke-linecap="round" stroke-linejoin="round" />
+						</svg>
+					</span>
+					<span>
+						<span class="block text-sm font-semibold text-ink">Vollständige Dokumentation als PDF</span>
+						<span class="block text-xs text-ink/50">Mit Titelblatt und Inhaltsverzeichnis, zum Ausdrucken oder Weiterleiten</span>
+					</span>
+				</span>
+				<span class="text-sm font-medium text-accent">Herunterladen →</span>
+			</a>
 		</section>
 
 		<nav class="sticky top-[76px] z-40 mt-10 overflow-x-auto border-y border-line bg-paper/90 backdrop-blur">
@@ -203,13 +108,7 @@ const jumpLinks = [
 
 		<section id="ausgangslage" class="reveal mx-auto max-w-4xl scroll-mt-32 px-6 py-12">
 			<h2 class="text-2xl font-semibold tracking-tight text-ink">Ausgangslage</h2>
-			<p class="mt-4 text-ink/60">
-				Die "NordHandel GmbH" (fiktiv), ein Großhändler mit rund 150 Mitarbeitenden, steuert
-				Einkauf, Lager und Rechnungswesen über drei getrennte Systeme: Bestellungen laufen über
-				Excel-Listen, der Wareneingang wird separat im Lager erfasst, Rechnungen werden manuell
-				dagegen geprüft. Das Ergebnis: doppelte Datenpflege, keine Echtzeit-Bestandsübersicht und
-				ein Monatsabschluss, der regelmäßig zu spät kommt.
-			</p>
+			<p class="mt-4 text-ink/60">{ausgangslage}</p>
 		</section>
 
 		<section id="vorgehen" class="reveal mx-auto max-w-4xl scroll-mt-32 px-6 py-12">
@@ -239,26 +138,13 @@ const jumpLinks = [
 		<section class="reveal mx-auto max-w-4xl px-6 py-12">
 			<h2 class="text-2xl font-semibold tracking-tight text-ink">Schwachstellen</h2>
 			<ul class="mt-6 grid gap-4 sm:grid-cols-2">
-				{
-					[
-						'Medienbrüche zwischen Excel, E-Mail und Rechnungssoftware',
-						'Keine Echtzeit-Bestandstransparenz für Einkauf und Vertrieb',
-						'Hoher manueller Aufwand und Fehlerquote beim Rechnungsabgleich',
-						'Keine einheitliche Datenbasis für Reporting und Kennzahlen',
-					].map((item) => (
-						<li class="rounded-2xl border border-line p-5 text-ink/70">{item}</li>
-					))
-				}
+				{weaknesses.map((item) => <li class="rounded-2xl border border-line p-5 text-ink/70">{item}</li>)}
 			</ul>
 		</section>
 
 		<section id="soll-konzept" class="reveal mx-auto max-w-4xl scroll-mt-32 px-6 py-12">
 			<h2 class="text-2xl font-semibold tracking-tight text-ink">Soll-Konzept</h2>
-			<p class="mt-4 text-ink/60">
-				Einführung von SAP S/4HANA mit integrierten Modulen für Einkauf (MM), Lager und
-				Finanzbuchhaltung (FI). Ein automatischer 3-Way-Match ersetzt den manuellen Abgleich, alle
-				Abteilungen arbeiten auf derselben Datenbasis.
-			</p>
+			<p class="mt-4 text-ink/60">{sollText}</p>
 			<div class="mt-6">
 				<MermaidDiagram code={sollProcess} id="soll-process" />
 			</div>
@@ -331,13 +217,7 @@ const jumpLinks = [
 
 		<section id="reflexion" class="reveal mx-auto max-w-4xl scroll-mt-32 px-6 py-12">
 			<h2 class="text-2xl font-semibold tracking-tight text-ink">Was ich daraus mitnehme</h2>
-			<p class="mt-4 max-w-2xl text-ink/60">
-				Am meisten überrascht hat mich beim Erstellen der Risikomatrix, wie stark
-				Akzeptanzprobleme bei Mitarbeitenden das Projektrisiko dominieren, mehr als jedes
-				technische Risiko. Eine ERP-Einführung scheitert selten an der Software, sondern daran,
-				ob die Menschen dahinter mitgenommen werden. Genau an dieser Schnittstelle zwischen
-				Prozessen, Technik und Menschen will ich später arbeiten.
-			</p>
+			<p class="mt-4 max-w-2xl text-ink/60">{reflexion}</p>
 		</section>
 
 		<section class="reveal mx-auto max-w-4xl px-6 py-16">

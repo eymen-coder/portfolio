@@ -1,0 +1,25 @@
+---
+// Internal-only page: renders the case study diagrams in light/print theme
+// so scripts/generate-diagram-images.mjs can screenshot them as static PNGs
+// for the PDF. Not linked anywhere on the site.
+import '../styles/global.css';
+import MermaidDiagramPrint from '../components/MermaidDiagramPrint.astro';
+import { istProcess, sollProcess, gantt } from '../data/case-study';
+---
+
+<html lang="de">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="robots" content="noindex, nofollow" />
+		<title>Diagram Source</title>
+	</head>
+	<body class="m-0 bg-[#fdfbf8] p-8">
+		<div style="width: 700px;">
+			<MermaidDiagramPrint code={istProcess} id="ist-process" />
+			<div style="height: 40px;"></div>
+			<MermaidDiagramPrint code={sollProcess} id="soll-process" />
+			<div style="height: 40px;"></div>
+			<MermaidDiagramPrint code={gantt} id="gantt-chart" />
+		</div>
+	</body>
+</html>
