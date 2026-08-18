@@ -5,7 +5,7 @@ import ProjectCard from './ProjectCard.astro';
 
 <section id="projekte" class="reveal mx-auto max-w-5xl scroll-mt-24 px-6 py-24">
 	<h2 class="text-3xl font-semibold tracking-tight text-ink">Projekte</h2>
-	<div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+	<div class="mt-10 grid gap-6 sm:grid-cols-2">
 		{projects.map((project, index) => <ProjectCard project={project} index={index} />)}
 	</div>
 </section>

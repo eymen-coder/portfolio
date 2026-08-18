@@ -1,0 +1,256 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import MermaidDiagram from '../components/MermaidDiagram.astro';
+
+const istProcess = `flowchart TD
+	A["Einkauf erstellt Bestellung in Excel"] --> B["Bestellung per E-Mail an Lieferant"]
+	B --> C["Wareneingang wird manuell im Lager erfasst"]
+	C --> D["Rechnung trifft separat per E-Mail ein"]
+	D --> E["Manueller Abgleich: Bestellung, Wareneingang, Rechnung"]
+	E --> F{"Abweichung?"}
+	F -->|Ja| G["Rueckfrage beim Lieferanten"]
+	F -->|Nein| H["Manuelle Buchung in Rechnungssoftware"]
+	G --> E
+	H --> I["Monatsabschluss mit Verzoegerung"]`;
+
+const sollProcess = `flowchart TD
+	A2["Einkauf erstellt Bestellung in SAP MM"] --> B2["Bestellung automatisch an Lieferant"]
+	B2 --> C2["Wareneingang direkt in SAP erfasst"]
+	C2 --> D2["Rechnung ueber Eingangsrechnungs-Workflow erfasst"]
+	D2 --> E2["Automatischer 3-Way-Match"]
+	E2 --> F2{"Abweichung?"}
+	F2 -->|Ja| G2["Automatische Eskalation an Einkauf"]
+	F2 -->|Nein| H2["Automatische Buchung in FI"]
+	H2 --> I2["Echtzeit-Reporting, puenktlicher Abschluss"]`;
+
+const gantt = `gantt
+	title Projektplan SAP S/4HANA-Einfuehrung
+	dateFormat YYYY-MM-DD
+	section Analyse & Konzeption
+	Ist-Analyse & Anforderungen      :a1, 2026-02-02, 15d
+	Fit-Gap-Analyse                  :a2, after a1, 10d
+	section Realisierung
+	Systemkonfiguration              :b1, after a2, 20d
+	Schnittstellen & Migration       :b2, after b1, 15d
+	section Test & Schulung
+	Integrationstests                :c1, after b2, 10d
+	Anwenderschulung                 :c2, after c1, 10d
+	section Go-Live
+	Go-Live                          :milestone, d1, after c2, 0d
+	Hypercare-Phase                  :d2, after d1, 15d`;
+
+const risks = [
+	{
+		risk: 'Datenmigrationsfehler bei Bestands- und Stammdaten',
+		probability: 'Mittel',
+		impact: 'Hoch',
+		mitigation: 'Frühzeitige Datenbereinigung, mehrere Test-Migrationen vor Go-Live',
+	},
+	{
+		risk: 'Akzeptanzprobleme bei Mitarbeitenden',
+		probability: 'Hoch',
+		impact: 'Mittel',
+		mitigation: 'Frühe Einbindung der Fachbereiche, Key-User-Konzept, gezielte Schulungen',
+	},
+	{
+		risk: 'Verzögerung durch Schnittstellenprobleme',
+		probability: 'Mittel',
+		impact: 'Mittel',
+		mitigation: 'Frühzeitige Schnittstellentests, Zeitpuffer im Projektplan',
+	},
+	{
+		risk: 'Budgetüberschreitung',
+		probability: 'Niedrig',
+		impact: 'Hoch',
+		mitigation: 'Klarer Change-Request-Prozess, Budgetreserve einplanen',
+	},
+	{
+		risk: 'Störung von Kernprozessen während Go-Live',
+		probability: 'Niedrig',
+		impact: 'Hoch',
+		mitigation: 'Hypercare-Phase, Rollback-Plan, Go-Live in prozessarmem Zeitraum',
+	},
+];
+
+const stakeholders = [
+	{
+		quadrant: 'Hohe Macht · Hohes Interesse',
+		people: 'Geschäftsführung, Projektleitung IT',
+	},
+	{
+		quadrant: 'Hohe Macht · Niedriges Interesse',
+		people: 'IT-Infrastruktur, externer SAP-Berater',
+	},
+	{
+		quadrant: 'Niedrige Macht · Hohes Interesse',
+		people: 'Einkauf, Lager, Buchhaltung (Endanwender)',
+	},
+	{
+		quadrant: 'Niedrige Macht · Niedriges Interesse',
+		people: 'Externe Lieferanten',
+	},
+];
+
+const results = [
+	{ value: '−40%', label: 'geschätzte manuelle Bearbeitungszeit beim Rechnungsabgleich' },
+	{ value: 'Echtzeit', label: 'Bestandstransparenz statt tagesaktueller Excel-Listen' },
+	{ value: '−5 Tage', label: 'geschätzte Verkürzung des Monatsabschlusses' },
+];
+---
+
+<Layout
+	title="SAP S/4HANA Case Study · Eymen Gülmez"
+	description="Konzeptstudie zur Einführung von SAP S/4HANA in einem mittelständischen Handelsunternehmen: Prozessanalyse, Soll-Konzept und Projektplanung."
+>
+	<Header />
+	<main>
+		<section class="reveal mx-auto max-w-4xl px-6 py-20 sm:py-28">
+			<a href="/#projekte" class="text-sm font-medium text-accent hover:text-ink">← Zurück zum Portfolio</a>
+			<p class="mt-8 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1 text-xs font-medium text-ink/60">
+				<span class="h-1.5 w-1.5 rounded-full bg-accent"></span>
+				Konzeptstudie · Fiktives Fallbeispiel
+			</p>
+			<h1 class="mt-5 text-4xl font-semibold leading-[1.1] tracking-tight text-ink sm:text-5xl">
+				SAP S/4HANA-Einführung bei einem mittelständischen Handelsunternehmen
+			</h1>
+			<p class="mt-5 max-w-2xl text-lg text-ink/60">
+				Eine selbst erarbeitete Fallstudie: Wie würde ich als Schnittstelle zwischen IT und
+				Business eine ERP-Einführung analysieren und planen? Das Unternehmen und die Zahlen sind
+				fiktiv, Vorgehen und Methodik sind es nicht.
+			</p>
+		</section>
+
+		<section class="reveal mx-auto max-w-4xl px-6 py-12">
+			<h2 class="text-2xl font-semibold tracking-tight text-ink">Ausgangslage</h2>
+			<p class="mt-4 text-ink/60">
+				Die "NordHandel GmbH" (fiktiv), ein Großhändler mit rund 150 Mitarbeitenden, steuert
+				Einkauf, Lager und Rechnungswesen über drei getrennte Systeme: Bestellungen laufen über
+				Excel-Listen, der Wareneingang wird separat im Lager erfasst, Rechnungen werden manuell
+				dagegen geprüft. Das Ergebnis: doppelte Datenpflege, keine Echtzeit-Bestandsübersicht und
+				ein Monatsabschluss, der regelmäßig zu spät kommt.
+			</p>
+		</section>
+
+		<section class="reveal mx-auto max-w-4xl px-6 py-12">
+			<h2 class="text-2xl font-semibold tracking-tight text-ink">Ist-Prozess</h2>
+			<p class="mt-4 text-ink/60">Der aktuelle Beschaffungsprozess, Schritt für Schritt.</p>
+			<div class="mt-6">
+				<MermaidDiagram code={istProcess} id="ist-process" />
+			</div>
+		</section>
+
+		<section class="reveal mx-auto max-w-4xl px-6 py-12">
+			<h2 class="text-2xl font-semibold tracking-tight text-ink">Schwachstellen</h2>
+			<ul class="mt-6 grid gap-4 sm:grid-cols-2">
+				{
+					[
+						'Medienbrüche zwischen Excel, E-Mail und Rechnungssoftware',
+						'Keine Echtzeit-Bestandstransparenz für Einkauf und Vertrieb',
+						'Hoher manueller Aufwand und Fehlerquote beim Rechnungsabgleich',
+						'Keine einheitliche Datenbasis für Reporting und Kennzahlen',
+					].map((item) => (
+						<li class="rounded-2xl border border-line p-5 text-ink/70">{item}</li>
+					))
+				}
+			</ul>
+		</section>
+
+		<section class="reveal mx-auto max-w-4xl px-6 py-12">
+			<h2 class="text-2xl font-semibold tracking-tight text-ink">Soll-Konzept</h2>
+			<p class="mt-4 text-ink/60">
+				Einführung von SAP S/4HANA mit integrierten Modulen für Einkauf (MM), Lager und
+				Finanzbuchhaltung (FI). Ein automatischer 3-Way-Match ersetzt den manuellen Abgleich, alle
+				Abteilungen arbeiten auf derselben Datenbasis.
+			</p>
+			<div class="mt-6">
+				<MermaidDiagram code={sollProcess} id="soll-process" />
+			</div>
+		</section>
+
+		<section class="reveal mx-auto max-w-4xl px-6 py-12">
+			<h2 class="text-2xl font-semibold tracking-tight text-ink">Projektplanung</h2>
+			<p class="mt-4 text-ink/60">Grobplanung über sechs Phasen, von der Analyse bis zur Hypercare-Phase nach Go-Live.</p>
+			<div class="mt-6">
+				<MermaidDiagram code={gantt} id="gantt-chart" />
+			</div>
+		</section>
+
+		<section class="reveal mx-auto max-w-4xl px-6 py-12">
+			<h2 class="text-2xl font-semibold tracking-tight text-ink">Risikomatrix</h2>
+			<div class="mt-6 overflow-x-auto rounded-2xl border border-line">
+				<table class="w-full min-w-[640px] text-left text-sm">
+					<thead>
+						<tr class="border-b border-line text-ink/50">
+							<th class="px-5 py-4 font-medium">Risiko</th>
+							<th class="px-5 py-4 font-medium">Wahrscheinlichkeit</th>
+							<th class="px-5 py-4 font-medium">Auswirkung</th>
+							<th class="px-5 py-4 font-medium">Gegenmaßnahme</th>
+						</tr>
+					</thead>
+					<tbody>
+						{
+							risks.map((r, i) => (
+								<tr class={i !== risks.length - 1 ? 'border-b border-line' : ''}>
+									<td class="px-5 py-4 text-ink">{r.risk}</td>
+									<td class="px-5 py-4 text-ink/70">{r.probability}</td>
+									<td class="px-5 py-4 text-ink/70">{r.impact}</td>
+									<td class="px-5 py-4 text-ink/60">{r.mitigation}</td>
+								</tr>
+							))
+						}
+					</tbody>
+				</table>
+			</div>
+		</section>
+
+		<section class="reveal mx-auto max-w-4xl px-6 py-12">
+			<h2 class="text-2xl font-semibold tracking-tight text-ink">Stakeholder-Analyse</h2>
+			<div class="mt-6 grid gap-4 sm:grid-cols-2">
+				{
+					stakeholders.map((s) => (
+						<div class="rounded-2xl border border-line p-5">
+							<p class="text-xs font-medium text-accent">{s.quadrant}</p>
+							<p class="mt-2 text-ink/70">{s.people}</p>
+						</div>
+					))
+				}
+			</div>
+		</section>
+
+		<section class="reveal mx-auto max-w-4xl px-6 py-12">
+			<h2 class="text-2xl font-semibold tracking-tight text-ink">Erwarteter Nutzen</h2>
+			<p class="mt-2 text-sm text-ink/50">Geschätzte Werte für dieses fiktive Fallbeispiel, keine belegten Praxiszahlen.</p>
+			<div class="mt-6 grid gap-6 sm:grid-cols-3">
+				{
+					results.map((r) => (
+						<div class="rounded-2xl border border-line p-6 text-center">
+							<p class="text-3xl font-semibold text-accent">{r.value}</p>
+							<p class="mt-2 text-sm text-ink/60">{r.label}</p>
+						</div>
+					))
+				}
+			</div>
+		</section>
+
+		<section class="reveal mx-auto max-w-4xl px-6 py-16">
+			<div class="rounded-3xl bg-ink px-8 py-12 text-center sm:px-16">
+				<h2 class="text-2xl font-semibold tracking-tight text-paper sm:text-3xl">
+					Neugierig auf mehr?
+				</h2>
+				<p class="mx-auto mt-3 max-w-lg text-paper/60">
+					Das ist genau die Art von Arbeit, die mich reizt: zwischen Prozess, Technik und Business
+					vermitteln. Lass uns reden.
+				</p>
+				<a
+					href="/#kontakt"
+					class="mt-6 inline-block rounded-full border border-paper/20 px-6 py-3 text-sm font-semibold text-paper transition-colors hover:border-accent hover:text-accent"
+				>
+					Kontakt aufnehmen
+				</a>
+			</div>
+		</section>
+	</main>
+	<Footer />
+</Layout>

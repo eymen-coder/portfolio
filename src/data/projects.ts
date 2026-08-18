@@ -8,6 +8,13 @@ export interface Project {
 
 export const projects: Project[] = [
 	{
+		title: 'SAP S/4HANA Case Study',
+		description:
+			'Konzeptstudie zur ERP-Einführung bei einem fiktiven Handelsunternehmen: Prozessanalyse, Soll-Konzept, Projektplanung mit Zeitplan, Risiken und Stakeholdern.',
+		tags: ['SAP', 'Prozessanalyse', 'Projektmanagement'],
+		link: '/case-study',
+	},
+	{
 		title: 'Stundenplan-Webseite',
 		description:
 			'Webanwendung zur Verwaltung und Anzeige von Stundenplänen, entwickelt als Hochschulprojekt an der FH Dortmund.',
