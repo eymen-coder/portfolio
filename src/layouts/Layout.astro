@@ -11,16 +11,36 @@ const {
 	title = 'Eymen Gülmez · Portfolio',
 	description = 'Portfolio von Eymen Gülmez, Wirtschaftsinformatik-Student an der FH Dortmund: Projekte, Über mich und Kontakt.',
 } = Astro.props;
+
+const siteUrl = 'https://www.eymensportfolio.de';
+const ogImage = `${siteUrl}/og-image.jpg`;
 ---
 
 <html lang="de">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" sizes="48x48" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
+		<link rel="canonical" href={siteUrl} />
 		<title>{title}</title>
+
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="Eymen Gülmez" />
+		<meta property="og:url" content={siteUrl} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={ogImage} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:locale" content="de_DE" />
+
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImage} />
 	</head>
 	<body class="bg-paper text-ink antialiased">
 		<Preloader />

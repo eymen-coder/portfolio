@@ -37,7 +37,7 @@ const hobbies = [
 		{
 			hobbies.map((hobby, i) => (
 				<div
-					class="reveal hobby-card group overflow-hidden rounded-2xl border border-line"
+					class="reveal hobby-card group flex h-full flex-col overflow-hidden rounded-2xl border border-line"
 					style={`transition-delay: ${i * 90}ms`}
 				>
 					<div class="reveal-scale overflow-hidden" style={`transition-delay: ${i * 90}ms`}>
@@ -49,7 +49,7 @@ const hobbies = [
 							class="h-40 w-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
 						/>
 					</div>
-					<div class="bg-paper p-5">
+					<div class="flex flex-1 flex-col bg-paper p-5">
 						<h3 class="font-semibold text-ink">{hobby.title}</h3>
 						<p class="mt-2 text-sm text-ink/60">{hobby.text}</p>
 					</div>
