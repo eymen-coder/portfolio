@@ -1,8 +1,8 @@
 ---
 const links = [
-	{ href: '#ueber-mich', label: 'Über mich' },
-	{ href: '#projekte', label: 'Projekte' },
-	{ href: '#kontakt', label: 'Kontakt' },
+	{ href: '/#ueber-mich', hash: '#ueber-mich', label: 'Über mich' },
+	{ href: '/#projekte', hash: '#projekte', label: 'Projekte' },
+	{ href: '/#kontakt', hash: '#kontakt', label: 'Kontakt' },
 ];
 
 const name = 'Eymen Gülmez';
@@ -11,7 +11,7 @@ const letters = name.split('').map((ch) => (ch === ' ' ? ' ' : ch));
 
 <header class="sticky top-0 z-50 border-b border-line/80 bg-paper/85 backdrop-blur">
 	<nav class="relative mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
-		<a href="#" class="logo text-lg font-semibold tracking-tight text-ink">
+		<a href="/" class="logo text-lg font-semibold tracking-tight text-ink">
 			{letters.map((ch, i) => (
 				<span class="letter" style={`transition-delay: ${i * 18}ms`}>
 					{ch}
@@ -47,7 +47,7 @@ const letters = name.split('').map((ch) => (ch === ' ' ? ' ' : ch));
 						<li class="menu-link" style={`transition-delay: ${i * 70}ms`}>
 							<a
 								href={link.href}
-								data-nav-link={link.href}
+								data-nav-link={link.hash}
 								class="nav-link group relative flex items-center gap-4 rounded-xl px-2 py-3.5 text-ink/80 transition-colors hover:bg-white/5 hover:text-accent"
 							>
 								<span class="menu-dot relative flex h-2.5 w-2.5 shrink-0 items-center justify-center rounded-full bg-ink/25 transition-colors group-hover:bg-accent">
