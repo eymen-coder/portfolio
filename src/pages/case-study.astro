@@ -41,6 +41,40 @@ const gantt = `gantt
 	Go-Live                          :milestone, d1, after c2, 0d
 	Hypercare-Phase                  :d2, after d1, 15d`;
 
+const facts = [
+	{ value: '150', label: 'Mitarbeitende' },
+	{ value: '3', label: 'getrennte Systeme im Ist-Zustand' },
+	{ value: '~13 Wochen', label: 'geplante Projektlaufzeit' },
+	{ value: '5', label: 'identifizierte Risiken' },
+];
+
+const methods = [
+	'Prozessmodellierung',
+	'Fit-Gap-Analyse',
+	'Risikomanagement',
+	'Stakeholder-Analyse',
+	'Projektplanung',
+];
+
+const approach = [
+	{
+		title: 'Anforderungen aufnehmen',
+		text: '(Fiktive) Gespräche mit Einkauf, Lager und Buchhaltung, um die tatsächlichen Pain Points zu verstehen, nicht nur die vermuteten.',
+	},
+	{
+		title: 'Ist-Prozess modellieren',
+		text: 'Den bestehenden Ablauf als Flowchart dokumentieren, um Medienbrüche und Schwachstellen sichtbar zu machen.',
+	},
+	{
+		title: 'Fit-Gap-Analyse',
+		text: 'Abgleich zwischen den Anforderungen und dem SAP-Standard, um zu klären, wo Customizing wirklich nötig ist.',
+	},
+	{
+		title: 'Konzept & Planung',
+		text: 'Soll-Prozess, Zeitplan, Risiken und Stakeholder definieren, bevor die eigentliche Umsetzung beginnt.',
+	},
+];
+
 const risks = [
 	{
 		risk: 'Datenmigrationsfehler bei Bestands- und Stammdaten',
@@ -98,6 +132,18 @@ const results = [
 	{ value: 'Echtzeit', label: 'Bestandstransparenz statt tagesaktueller Excel-Listen' },
 	{ value: '−5 Tage', label: 'geschätzte Verkürzung des Monatsabschlusses' },
 ];
+
+const jumpLinks = [
+	{ href: '#ausgangslage', label: 'Ausgangslage' },
+	{ href: '#vorgehen', label: 'Vorgehen' },
+	{ href: '#ist-prozess', label: 'Ist-Prozess' },
+	{ href: '#soll-konzept', label: 'Soll-Konzept' },
+	{ href: '#projektplanung', label: 'Planung' },
+	{ href: '#risiken', label: 'Risiken' },
+	{ href: '#stakeholder', label: 'Stakeholder' },
+	{ href: '#nutzen', label: 'Nutzen' },
+	{ href: '#reflexion', label: 'Reflexion' },
+];
 ---
 
 <Layout
@@ -106,7 +152,7 @@ const results = [
 >
 	<Header />
 	<main>
-		<section class="reveal mx-auto max-w-4xl px-6 py-20 sm:py-28">
+		<section class="reveal mx-auto max-w-4xl px-6 pt-20 sm:pt-28">
 			<a href="/#projekte" class="text-sm font-medium text-accent hover:text-ink">← Zurück zum Portfolio</a>
 			<p class="mt-8 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1 text-xs font-medium text-ink/60">
 				<span class="h-1.5 w-1.5 rounded-full bg-accent"></span>
@@ -118,11 +164,44 @@ const results = [
 			<p class="mt-5 max-w-2xl text-lg text-ink/60">
 				Eine selbst erarbeitete Fallstudie: Wie würde ich als Schnittstelle zwischen IT und
 				Business eine ERP-Einführung analysieren und planen? Das Unternehmen und die Zahlen sind
-				fiktiv, Vorgehen und Methodik sind es nicht.
+				fiktiv, Vorgehen und Methodik sind es nicht — sie bauen auf meiner Hochschulanalyse zu{' '}
+				<a href="/#projekte" class="text-accent hover:text-ink">SAP S/4HANA-Betriebsmodellen</a> auf.
 			</p>
+			<div class="mt-6 flex flex-wrap gap-2">
+				{
+					methods.map((m) => (
+						<span class="rounded-full bg-ink/8 px-3 py-1 text-xs text-ink/60">{m}</span>
+					))
+				}
+			</div>
+
+			<div class="mt-10 grid grid-cols-2 gap-4 border-t border-line pt-8 sm:grid-cols-4">
+				{
+					facts.map((f) => (
+						<div>
+							<p class="text-2xl font-semibold text-accent">{f.value}</p>
+							<p class="mt-1 text-xs text-ink/50">{f.label}</p>
+						</div>
+					))
+				}
+			</div>
 		</section>
 
-		<section class="reveal mx-auto max-w-4xl px-6 py-12">
+		<nav class="sticky top-[76px] z-40 mt-10 overflow-x-auto border-y border-line bg-paper/90 backdrop-blur">
+			<ul class="mx-auto flex max-w-4xl gap-6 whitespace-nowrap px-6 py-3 text-sm text-ink/60">
+				{
+					jumpLinks.map((link) => (
+						<li>
+							<a href={link.href} class="transition-colors hover:text-accent">
+								{link.label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+
+		<section id="ausgangslage" class="reveal mx-auto max-w-4xl scroll-mt-32 px-6 py-12">
 			<h2 class="text-2xl font-semibold tracking-tight text-ink">Ausgangslage</h2>
 			<p class="mt-4 text-ink/60">
 				Die "NordHandel GmbH" (fiktiv), ein Großhändler mit rund 150 Mitarbeitenden, steuert
@@ -133,7 +212,23 @@ const results = [
 			</p>
 		</section>
 
-		<section class="reveal mx-auto max-w-4xl px-6 py-12">
+		<section id="vorgehen" class="reveal mx-auto max-w-4xl scroll-mt-32 px-6 py-12">
+			<h2 class="text-2xl font-semibold tracking-tight text-ink">Mein Vorgehen</h2>
+			<p class="mt-4 text-ink/60">Vier Schritte, bevor überhaupt über konkrete Systemkonfiguration gesprochen wird.</p>
+			<div class="mt-8 grid gap-8 sm:grid-cols-2">
+				{
+					approach.map((step, i) => (
+						<div>
+							<span class="text-xs font-medium text-accent">{String(i + 1).padStart(2, '0')}</span>
+							<h3 class="mt-2 font-semibold text-ink">{step.title}</h3>
+							<p class="mt-2 text-sm text-ink/60">{step.text}</p>
+						</div>
+					))
+				}
+			</div>
+		</section>
+
+		<section id="ist-prozess" class="reveal mx-auto max-w-4xl scroll-mt-32 px-6 py-12">
 			<h2 class="text-2xl font-semibold tracking-tight text-ink">Ist-Prozess</h2>
 			<p class="mt-4 text-ink/60">Der aktuelle Beschaffungsprozess, Schritt für Schritt.</p>
 			<div class="mt-6">
@@ -157,7 +252,7 @@ const results = [
 			</ul>
 		</section>
 
-		<section class="reveal mx-auto max-w-4xl px-6 py-12">
+		<section id="soll-konzept" class="reveal mx-auto max-w-4xl scroll-mt-32 px-6 py-12">
 			<h2 class="text-2xl font-semibold tracking-tight text-ink">Soll-Konzept</h2>
 			<p class="mt-4 text-ink/60">
 				Einführung von SAP S/4HANA mit integrierten Modulen für Einkauf (MM), Lager und
@@ -169,7 +264,7 @@ const results = [
 			</div>
 		</section>
 
-		<section class="reveal mx-auto max-w-4xl px-6 py-12">
+		<section id="projektplanung" class="reveal mx-auto max-w-4xl scroll-mt-32 px-6 py-12">
 			<h2 class="text-2xl font-semibold tracking-tight text-ink">Projektplanung</h2>
 			<p class="mt-4 text-ink/60">Grobplanung über sechs Phasen, von der Analyse bis zur Hypercare-Phase nach Go-Live.</p>
 			<div class="mt-6">
@@ -177,7 +272,7 @@ const results = [
 			</div>
 		</section>
 
-		<section class="reveal mx-auto max-w-4xl px-6 py-12">
+		<section id="risiken" class="reveal mx-auto max-w-4xl scroll-mt-32 px-6 py-12">
 			<h2 class="text-2xl font-semibold tracking-tight text-ink">Risikomatrix</h2>
 			<div class="mt-6 overflow-x-auto rounded-2xl border border-line">
 				<table class="w-full min-w-[640px] text-left text-sm">
@@ -205,7 +300,7 @@ const results = [
 			</div>
 		</section>
 
-		<section class="reveal mx-auto max-w-4xl px-6 py-12">
+		<section id="stakeholder" class="reveal mx-auto max-w-4xl scroll-mt-32 px-6 py-12">
 			<h2 class="text-2xl font-semibold tracking-tight text-ink">Stakeholder-Analyse</h2>
 			<div class="mt-6 grid gap-4 sm:grid-cols-2">
 				{
@@ -219,7 +314,7 @@ const results = [
 			</div>
 		</section>
 
-		<section class="reveal mx-auto max-w-4xl px-6 py-12">
+		<section id="nutzen" class="reveal mx-auto max-w-4xl scroll-mt-32 px-6 py-12">
 			<h2 class="text-2xl font-semibold tracking-tight text-ink">Erwarteter Nutzen</h2>
 			<p class="mt-2 text-sm text-ink/50">Geschätzte Werte für dieses fiktive Fallbeispiel, keine belegten Praxiszahlen.</p>
 			<div class="mt-6 grid gap-6 sm:grid-cols-3">
@@ -232,6 +327,17 @@ const results = [
 					))
 				}
 			</div>
+		</section>
+
+		<section id="reflexion" class="reveal mx-auto max-w-4xl scroll-mt-32 px-6 py-12">
+			<h2 class="text-2xl font-semibold tracking-tight text-ink">Was ich daraus mitnehme</h2>
+			<p class="mt-4 max-w-2xl text-ink/60">
+				Am meisten überrascht hat mich beim Erstellen der Risikomatrix, wie stark
+				Akzeptanzprobleme bei Mitarbeitenden das Projektrisiko dominieren, mehr als jedes
+				technische Risiko. Eine ERP-Einführung scheitert selten an der Software, sondern daran,
+				ob die Menschen dahinter mitgenommen werden. Genau an dieser Schnittstelle zwischen
+				Prozessen, Technik und Menschen will ich später arbeiten.
+			</p>
 		</section>
 
 		<section class="reveal mx-auto max-w-4xl px-6 py-16">

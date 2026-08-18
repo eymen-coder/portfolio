@@ -4,6 +4,7 @@ export interface Project {
 	tags: string[];
 	link?: string;
 	repo?: string;
+	image?: string;
 }
 
 export const projects: Project[] = [
@@ -13,6 +14,7 @@ export const projects: Project[] = [
 			'Konzeptstudie zur ERP-Einführung bei einem fiktiven Handelsunternehmen: Prozessanalyse, Soll-Konzept, Projektplanung mit Zeitplan, Risiken und Stakeholdern.',
 		tags: ['SAP', 'Prozessanalyse', 'Projektmanagement'],
 		link: '/case-study',
+		image: '/case-study-preview.jpg',
 	},
 	{
 		title: 'Stundenplan-Webseite',
