@@ -29,8 +29,12 @@ const { project, index } = Astro.props;
 			(project.link || project.repo) && (
 				<div class="mt-5 flex gap-4 text-sm">
 					{project.link && (
-						<a href={project.link} class="font-medium text-accent hover:text-ink">
-							Live ansehen →
+						<a
+							href={project.link}
+							download={project.download ? true : undefined}
+							class="font-medium text-accent hover:text-ink"
+						>
+							{project.download ? 'PDF herunterladen' : 'Live ansehen'} →
 						</a>
 					)}
 					{project.repo && (

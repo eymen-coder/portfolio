@@ -5,7 +5,10 @@ export interface Project {
 	link?: string;
 	repo?: string;
 	image?: string;
+	download?: boolean;
 }
+
+const thesisPdf = '/eymen-guelmez-projektthesis-sap-s4hana.pdf';
 
 export const projects: Project[] = [
 	{
@@ -13,7 +16,8 @@ export const projects: Project[] = [
 		description:
 			'Konzeptstudie zur ERP-Einführung bei einem fiktiven Handelsunternehmen: Prozessanalyse, Soll-Konzept, Projektplanung mit Zeitplan, Risiken und Stakeholdern.',
 		tags: ['SAP', 'Prozessanalyse', 'Projektmanagement'],
-		link: '/case-study',
+		link: thesisPdf,
+		download: true,
 		image: '/case-study-preview.jpg',
 	},
 	{
@@ -36,5 +40,7 @@ export const projects: Project[] = [
 			'Vergleichsanalyse verschiedener SAP S/4HANA Betriebsmodelle im Rahmen eines Hochschulprojekts.',
 		tags: ['SAP', 'ERP', 'Analyse'],
 		image: '/project-sap-betriebsmodelle.jpg',
+		link: thesisPdf,
+		download: true,
 	},
 ];

@@ -9,7 +9,7 @@ const name = 'Eymen Gülmez';
 const letters = name.split('').map((ch) => (ch === ' ' ? ' ' : ch));
 ---
 
-<header class="sticky top-0 z-50 border-b border-line/80 bg-paper/85 backdrop-blur">
+<header class="header-autohide sticky top-0 z-50 border-b border-line/80 bg-paper/85 backdrop-blur transition-transform duration-300">
 	<nav class="relative mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
 		<a href="/" class="logo text-lg font-semibold tracking-tight text-ink">
 			{letters.map((ch, i) => (
@@ -123,4 +123,47 @@ const letters = name.split('').map((ch) => (ch === ' ' ? ' ' : ch));
 		{ rootMargin: '-45% 0px -45% 0px' },
 	);
 	sections.forEach((section) => sectionObserver.observe(section));
+
+	const header = document.querySelector<HTMLElement>('.header-autohide');
+	let lastY = window.scrollY;
+	let headerHidden = false;
+
+	function updateHeaderVisibility() {
+		const currentY = window.scrollY;
+		const menuOpen = toggle?.getAttribute('aria-expanded') === 'true';
+
+		if (menuOpen) {
+			lastY = currentY;
+			return;
+		}
+
+		const scrollingDown = currentY > lastY;
+		const pastThreshold = currentY > 100;
+
+		if (scrollingDown && pastThreshold && !headerHidden) {
+			header?.style.setProperty('transform', 'translateY(-100%)');
+			document.body.classList.add('header-hidden');
+			headerHidden = true;
+		} else if ((!scrollingDown || !pastThreshold) && headerHidden) {
+			header?.style.setProperty('transform', 'translateY(0)');
+			document.body.classList.remove('header-hidden');
+			headerHidden = false;
+		}
+		lastY = currentY;
+	}
+
+	let ticking = false;
+	document.addEventListener(
+		'scroll',
+		() => {
+			if (!ticking) {
+				requestAnimationFrame(() => {
+					updateHeaderVisibility();
+					ticking = false;
+				});
+				ticking = true;
+			}
+		},
+		{ passive: true },
+	);
 </script>

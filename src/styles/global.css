@@ -197,6 +197,39 @@ body {
 	transform: translateX(0);
 }
 
+.subnav-below-header {
+	top: 76px;
+	transition: top 0.3s ease;
+}
+
+body.header-hidden .subnav-below-header {
+	top: 0;
+}
+
+.diagram-trigger[aria-expanded='true'] .diagram-chevron {
+	transform: rotate(180deg);
+}
+
+.diagram-chevron {
+	display: inline-block;
+	transition: transform 0.3s ease;
+}
+
+.diagram-panel {
+	display: grid;
+	grid-template-rows: 0fr;
+	transition: grid-template-rows 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.diagram-panel > div {
+	overflow: hidden;
+	min-height: 0;
+}
+
+.diagram-panel.is-open {
+	grid-template-rows: 1fr;
+}
+
 @media (prefers-reduced-motion: reduce) {
 	.reveal,
 	.reveal-scale,
