@@ -28,6 +28,14 @@ export const projects: Project[] = [
 		image: '/project-chat-assistant.jpg',
 	},
 	{
+		title: 'Interview-Boss-Battle',
+		description:
+			'Kleines Browser-Spiel: Besiege den Recruiter-Boss mit den überzeugendsten Interview-Antworten. Mit synthetisierten Sound-Effekten und Screen-Shake.',
+		tags: ['Spiel', 'Web Audio API', 'JavaScript'],
+		link: '/interview-boss',
+		image: '/project-interview-boss.jpg',
+	},
+	{
 		title: 'Stundenplan-Webseite',
 		description:
 			'Webanwendung zur Verwaltung und Anzeige von Stundenplänen, entwickelt als Hochschulprojekt an der FH Dortmund.',

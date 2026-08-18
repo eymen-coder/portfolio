@@ -1,0 +1,239 @@
+---
+import { questions, bossAttacks } from '../data/interview-boss';
+---
+
+<div class="reveal-scale overflow-hidden rounded-3xl border border-line bg-paper/60">
+	<div class="grid gap-6 border-b border-line p-6 sm:grid-cols-2 sm:gap-10">
+		<div>
+			<div class="flex items-center justify-between text-sm">
+				<span class="font-semibold text-ink">Du</span>
+				<span id="player-hp-label" class="text-ink/60">100 / 100</span>
+			</div>
+			<div class="mt-2 h-3 overflow-hidden rounded-full bg-ink/10">
+				<div id="player-hp-bar" class="h-full rounded-full bg-accent transition-all duration-300" style="width: 100%"></div>
+			</div>
+		</div>
+		<div>
+			<div class="flex items-center justify-between text-sm">
+				<span class="font-semibold text-ink">Recruiter-Boss</span>
+				<span id="boss-hp-label" class="text-ink/60">100 / 100</span>
+			</div>
+			<div class="mt-2 h-3 overflow-hidden rounded-full bg-ink/10">
+				<div id="boss-hp-bar" class="h-full rounded-full bg-nebula transition-all duration-300" style="width: 100%"></div>
+			</div>
+		</div>
+	</div>
+
+	<div id="battle-stage" class="relative flex flex-col items-center gap-4 px-6 py-8 sm:py-10">
+		<div id="boss-avatar" class="relative">
+			<svg width="120" height="120" viewBox="0 0 120 120" fill="none">
+				<circle cx="60" cy="60" r="56" fill="#2c2820" />
+				<circle cx="60" cy="52" r="26" fill="#f5f0e6" />
+				<rect x="30" y="46" width="60" height="14" rx="7" fill="#15130f" />
+				<rect x="34" y="49" width="24" height="8" rx="4" fill="#8b8cf0" />
+				<rect x="62" y="49" width="24" height="8" rx="4" fill="#8b8cf0" />
+				<path d="M45 84 L60 72 L75 84 L68 106 L52 106 Z" fill="#f0a94e" />
+				<rect x="56" y="84" width="8" height="16" fill="#15130f" />
+			</svg>
+			<div id="floating-text-container" class="pointer-events-none absolute inset-x-0 -top-4 flex justify-center"></div>
+		</div>
+		<p id="boss-line" class="max-w-md text-center text-sm text-ink/60">
+			"Setzen Sie sich. Fangen wir an."
+		</p>
+
+		<div id="pre-battle" class="mt-2 flex flex-col items-center gap-3">
+			<p class="max-w-sm text-center text-ink/60">
+				Beantworte Interviewfragen, um dem Recruiter-Boss Schaden zuzufügen. Schlechte Antworten
+				lassen ihn zurückschlagen.
+			</p>
+			<button id="start-battle" type="button" class="rounded-full bg-ink px-6 py-3 text-sm font-semibold text-paper transition-colors hover:bg-accent">
+				Kampf starten
+			</button>
+		</div>
+
+		<div id="in-battle" class="hidden w-full max-w-lg flex-col gap-3">
+			<p id="question-prompt" class="text-center text-lg font-semibold text-ink"></p>
+			<div id="answers" class="flex flex-col gap-2"></div>
+		</div>
+
+		<div id="end-screen" class="hidden flex-col items-center gap-4 text-center">
+			<p id="end-title" class="text-2xl font-semibold text-ink"></p>
+			<p id="end-subtitle" class="max-w-sm text-ink/60"></p>
+			<button id="restart-battle" type="button" class="rounded-full border border-line px-6 py-3 text-sm font-semibold text-ink transition-colors hover:border-accent hover:text-accent">
+				Nochmal versuchen
+			</button>
+		</div>
+	</div>
+</div>
+
+<script define:vars={{ questions, bossAttacks }}>
+	const playerHpBar = document.getElementById('player-hp-bar');
+	const playerHpLabel = document.getElementById('player-hp-label');
+	const bossHpBar = document.getElementById('boss-hp-bar');
+	const bossHpLabel = document.getElementById('boss-hp-label');
+	const bossAvatar = document.getElementById('boss-avatar');
+	const battleStage = document.getElementById('battle-stage');
+	const bossLine = document.getElementById('boss-line');
+	const floatingContainer = document.getElementById('floating-text-container');
+	const preBattle = document.getElementById('pre-battle');
+	const inBattle = document.getElementById('in-battle');
+	const endScreen = document.getElementById('end-screen');
+	const startBtn = document.getElementById('start-battle');
+	const restartBtn = document.getElementById('restart-battle');
+	const questionPrompt = document.getElementById('question-prompt');
+	const answersEl = document.getElementById('answers');
+	const endTitle = document.getElementById('end-title');
+	const endSubtitle = document.getElementById('end-subtitle');
+
+	let playerHp = 100;
+	let bossHp = 100;
+	let pool = [];
+
+	let audioCtx;
+	function getCtx() {
+		if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+		return audioCtx;
+	}
+	function beep(freq, duration, type = 'square', volume = 0.12, delay = 0) {
+		try {
+			const ctx = getCtx();
+			const start = ctx.currentTime + delay;
+			const osc = ctx.createOscillator();
+			const gain = ctx.createGain();
+			osc.type = type;
+			osc.frequency.value = freq;
+			gain.gain.value = volume;
+			osc.connect(gain).connect(ctx.destination);
+			osc.start(start);
+			gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+			osc.stop(start + duration);
+		} catch (e) {}
+	}
+	const sfx = {
+		hit: () => beep(220, 0.12, 'square'),
+		crit: () => { beep(440, 0.08, 'square'); beep(660, 0.14, 'square', 0.12, 0.08); },
+		counter: () => beep(110, 0.22, 'sawtooth'),
+		victory: () => [523, 659, 784, 1046].forEach((f, i) => beep(f, 0.18, 'triangle', 0.12, i * 0.12)),
+		defeat: () => [380, 300, 220].forEach((f, i) => beep(f, 0.25, 'sawtooth', 0.12, i * 0.15)),
+	};
+
+	function shuffle(arr) {
+		return [...arr].sort(() => Math.random() - 0.5);
+	}
+
+	function updateBars() {
+		playerHp = Math.max(0, playerHp);
+		bossHp = Math.max(0, bossHp);
+		playerHpBar.style.width = `${playerHp}%`;
+		bossHpBar.style.width = `${bossHp}%`;
+		playerHpLabel.textContent = `${playerHp} / 100`;
+		bossHpLabel.textContent = `${bossHp} / 100`;
+	}
+
+	function floatText(text, cls) {
+		const el = document.createElement('div');
+		el.className = `floating-combat-text ${cls}`;
+		el.textContent = text;
+		floatingContainer.appendChild(el);
+		setTimeout(() => el.remove(), 1000);
+	}
+
+	function shakeBoss() {
+		bossAvatar.classList.remove('shake');
+		void bossAvatar.offsetWidth;
+		bossAvatar.classList.add('shake');
+	}
+
+	function nextQuestion() {
+		if (pool.length === 0) pool = shuffle(questions);
+		const q = pool.pop();
+		questionPrompt.textContent = q.prompt;
+		bossLine.textContent = `"${bossAttacks[Math.floor(Math.random() * bossAttacks.length)]}"`;
+		answersEl.innerHTML = '';
+		shuffle(q.answers).forEach((a) => {
+			const btn = document.createElement('button');
+			btn.type = 'button';
+			btn.className =
+				'rounded-2xl border border-line px-4 py-3 text-left text-sm text-ink/80 transition-colors hover:border-accent/50 hover:text-ink';
+			btn.textContent = a.text;
+			btn.addEventListener('click', () => handleAnswer(a));
+			answersEl.appendChild(btn);
+		});
+	}
+
+	function handleAnswer(answer) {
+		Array.from(answersEl.children).forEach((b) => (b.disabled = true));
+
+		if (answer.damage > 0) {
+			bossHp -= answer.damage;
+			shakeBoss();
+			if (answer.damage >= 24) sfx.crit();
+			else sfx.hit();
+			floatText(`-${answer.damage}`, 'text-accent');
+		}
+		if (answer.counter > 0) {
+			setTimeout(() => {
+				playerHp -= answer.counter;
+				sfx.counter();
+				floatText(`Boss kontert -${answer.counter}`, 'text-nebula');
+				updateBars();
+				checkEnd(answer.caption);
+			}, 500);
+		}
+		updateBars();
+		if (!checkEnd(answer.caption)) {
+			setTimeout(() => {
+				bossLine.textContent = answer.caption;
+				setTimeout(() => {
+					Array.from(answersEl.children).forEach((b) => (b.disabled = false));
+					nextQuestion();
+				}, 900);
+			}, answer.counter > 0 ? 600 : 100);
+		}
+	}
+
+	function checkEnd(caption) {
+		if (bossHp <= 0) {
+			endBattle(true);
+			return true;
+		}
+		if (playerHp <= 0) {
+			endBattle(false);
+			return true;
+		}
+		return false;
+	}
+
+	function endBattle(won) {
+		inBattle.classList.add('hidden');
+		endScreen.classList.remove('hidden');
+		endScreen.classList.add('flex');
+		if (won) {
+			sfx.victory();
+			bossLine.textContent = '"...Wir melden uns bei Ihnen."';
+			endTitle.textContent = 'Boss besiegt! 🏆';
+			endSubtitle.textContent = 'Du hast den Recruiter-Boss überzeugt. In echt wär das ein Angebot wert.';
+		} else {
+			sfx.defeat();
+			bossLine.textContent = '"Als Nächstes, bitte."';
+			endTitle.textContent = 'Game Over';
+			endSubtitle.textContent = 'Der Recruiter-Boss hat gewonnen. Nächstes Mal klappt’s.';
+		}
+	}
+
+	function startBattle() {
+		playerHp = 100;
+		bossHp = 100;
+		pool = [];
+		updateBars();
+		preBattle.classList.add('hidden');
+		endScreen.classList.add('hidden');
+		endScreen.classList.remove('flex');
+		inBattle.classList.remove('hidden');
+		inBattle.classList.add('flex');
+		nextQuestion();
+	}
+
+	startBtn?.addEventListener('click', startBattle);
+	restartBtn?.addEventListener('click', startBattle);
+</script>

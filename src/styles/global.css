@@ -287,6 +287,37 @@ body.header-hidden .subnav-below-header {
 	animation-delay: 0.3s;
 }
 
+.shake {
+	animation: boss-shake 0.4s ease;
+}
+
+@keyframes boss-shake {
+	0%, 100% { transform: translateX(0); }
+	20% { transform: translateX(-6px) rotate(-2deg); }
+	40% { transform: translateX(6px) rotate(2deg); }
+	60% { transform: translateX(-4px) rotate(-1deg); }
+	80% { transform: translateX(4px) rotate(1deg); }
+}
+
+.floating-combat-text {
+	position: absolute;
+	font-weight: 700;
+	font-size: 1.25rem;
+	animation: float-up 1s ease-out forwards;
+	white-space: nowrap;
+}
+
+@keyframes float-up {
+	0% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	100% {
+		opacity: 0;
+		transform: translateY(-40px);
+	}
+}
+
 @keyframes chat-bounce {
 	0%, 60%, 100% {
 		transform: translateY(0);
