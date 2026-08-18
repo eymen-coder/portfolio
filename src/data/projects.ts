@@ -16,8 +16,7 @@ export const projects: Project[] = [
 		description:
 			'Konzeptstudie zur ERP-Einführung bei einem fiktiven Handelsunternehmen: Prozessanalyse, Soll-Konzept, Projektplanung mit Zeitplan, Risiken und Stakeholdern.',
 		tags: ['SAP', 'Prozessanalyse', 'Projektmanagement'],
-		link: thesisPdf,
-		download: true,
+		link: '/case-study',
 		image: '/case-study-preview.jpg',
 	},
 	{
