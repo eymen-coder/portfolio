@@ -20,6 +20,14 @@ export const projects: Project[] = [
 		image: '/case-study-preview.jpg',
 	},
 	{
+		title: 'KI-Support-Assistent',
+		description:
+			'Prototyp eines Chat-Assistenten für einen Online-Shop: Intent-Erkennung per Keyword-Matching, als Ausgangspunkt für eine echte LLM-Integration gebaut.',
+		tags: ['Conversational UX', 'JavaScript', 'Prototyping'],
+		link: '/chat-assistant',
+		image: '/project-chat-assistant.jpg',
+	},
+	{
 		title: 'Stundenplan-Webseite',
 		description:
 			'Webanwendung zur Verwaltung und Anzeige von Stundenplänen, entwickelt als Hochschulprojekt an der FH Dortmund.',

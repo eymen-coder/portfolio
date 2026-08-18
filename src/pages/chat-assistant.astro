@@ -1,0 +1,101 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import ChatDemo from '../components/ChatDemo.astro';
+
+const howItWorks = [
+	{
+		title: 'Intent-Erkennung per Keywords',
+		text: 'Jede Nutzeranfrage wird auf Schlüsselwörter geprüft (z.B. "Lieferzeit", "zurückschicken"). Der Intent mit den meisten Treffern gewinnt.',
+	},
+	{
+		title: 'Vorbereitete Antworten',
+		text: 'Statt live zu generieren, greift der Bot auf feste Textbausteine zurück. Schnell, kostenlos, aber inhaltlich starr.',
+	},
+	{
+		title: 'Fallback für Unbekanntes',
+		text: 'Kennt der Bot kein passendes Muster, gibt er das offen zu, statt etwas zu erfinden — wichtig für Vertrauen im echten Einsatz.',
+	},
+	{
+		title: 'Ausbaufähig zu echtem LLM',
+		text: 'Die Intent-Matching-Logik ließe sich 1:1 durch einen Aufruf an eine Sprachmodell-API ersetzen, ohne die Chat-Oberfläche anzufassen.',
+	},
+];
+---
+
+<Layout
+	title="KI-Support-Assistent (Demo) · Eymen Gülmez"
+	description="Prototyp eines Chat-Assistenten für einen fiktiven Online-Shop: Intent-Erkennung per Keyword-Matching, gebaut als Ausgangspunkt für eine echte LLM-Integration."
+>
+	<Header />
+	<main>
+		<section class="reveal mx-auto max-w-4xl px-6 pt-20 sm:pt-28">
+			<a href="/#projekte" class="text-sm font-medium text-accent hover:text-ink">← Zurück zum Portfolio</a>
+			<p class="mt-8 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1 text-xs font-medium text-ink/60">
+				<span class="h-1.5 w-1.5 rounded-full bg-accent"></span>
+				Prototyp · Simulierte Antworten, kein externes Sprachmodell
+			</p>
+			<h1 class="mt-5 text-4xl font-semibold leading-[1.1] tracking-tight text-ink sm:text-5xl">
+				KI-Support-Assistent für einen Online-Shop
+			</h1>
+			<p class="mt-5 max-w-2xl text-lg text-ink/60">
+				Ein Prototyp, wie ein Chat-Support für einen Online-Shop aussehen könnte: Nutzer:innen
+				stellen Fragen zu Versand, Rückgabe oder Zahlung, der Assistent erkennt das Thema per
+				Keyword-Matching und antwortet sofort. Bewusst ohne externe KI-API gebaut, um Aufbau und
+				Grenzen eines solchen Systems greifbar zu zeigen.
+			</p>
+			<div class="mt-6 flex flex-wrap gap-2">
+				{
+					['Conversational UX', 'Intent Matching', 'Prototyping', 'Vanilla JavaScript'].map((tag) => (
+						<span class="rounded-full bg-ink/8 px-3 py-1 text-xs text-ink/60">{tag}</span>
+					))
+				}
+			</div>
+		</section>
+
+		<section class="reveal mx-auto max-w-4xl px-6 py-12">
+			<h2 class="text-2xl font-semibold tracking-tight text-ink">Live-Demo</h2>
+			<p class="mt-3 text-ink/60">
+				Probier's aus — z.B. "Wie lange dauert der Versand?" oder nutze die Schnellauswahl.
+			</p>
+			<div class="mt-6">
+				<ChatDemo />
+			</div>
+		</section>
+
+		<section class="reveal mx-auto max-w-4xl px-6 py-12">
+			<h2 class="text-2xl font-semibold tracking-tight text-ink">Wie es funktioniert</h2>
+			<div class="mt-8 grid gap-8 sm:grid-cols-2">
+				{
+					howItWorks.map((step, i) => (
+						<div>
+							<span class="text-xs font-medium text-accent">{String(i + 1).padStart(2, '0')}</span>
+							<h3 class="mt-2 font-semibold text-ink">{step.title}</h3>
+							<p class="mt-2 text-sm text-ink/60">{step.text}</p>
+						</div>
+					))
+				}
+			</div>
+		</section>
+
+		<section class="reveal mx-auto max-w-4xl px-6 py-16">
+			<div class="rounded-3xl bg-ink px-8 py-12 text-center sm:px-16">
+				<h2 class="text-2xl font-semibold tracking-tight text-paper sm:text-3xl">
+					Lust, das mit echter KI weiterzudenken?
+				</h2>
+				<p class="mx-auto mt-3 max-w-lg text-paper/60">
+					Genau an der Schnittstelle zwischen Prototyp und Produktivsystem will ich arbeiten.
+					Lass uns reden.
+				</p>
+				<a
+					href="/#kontakt"
+					class="mt-6 inline-block rounded-full border border-paper/20 px-6 py-3 text-sm font-semibold text-paper transition-colors hover:border-accent hover:text-accent"
+				>
+					Kontakt aufnehmen
+				</a>
+			</div>
+		</section>
+	</main>
+	<Footer />
+</Layout>

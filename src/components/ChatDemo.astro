@@ -1,0 +1,120 @@
+---
+import { shopName, intents, fallback, quickReplies } from '../data/chat-assistant';
+---
+
+<div class="reveal-scale overflow-hidden rounded-3xl border border-line bg-paper/60">
+	<div class="flex items-center gap-3 border-b border-line px-6 py-4">
+		<span class="relative flex h-2.5 w-2.5">
+			<span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60"></span>
+			<span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-accent"></span>
+		</span>
+		<div>
+			<p class="text-sm font-semibold text-ink">{shopName} Support</p>
+			<p class="text-xs text-ink/50">Demo · simulierte Antworten, kein echtes Sprachmodell</p>
+		</div>
+	</div>
+
+	<div id="chat-log" class="flex h-80 flex-col gap-3 overflow-y-auto px-6 py-5 sm:h-96">
+		<div class="chat-bubble chat-bubble-bot">
+			Hallo! Ich bin der Support-Demo-Assistent von {shopName}. Frag mich gerne etwas zu Versand,
+			Rückgabe, Zahlung oder Bestellstatus.
+		</div>
+	</div>
+
+	<div class="flex flex-wrap gap-2 border-t border-line px-6 py-3">
+		{
+			quickReplies.map((q) => (
+				<button type="button" class="chat-quick-reply rounded-full border border-line px-3 py-1.5 text-xs text-ink/70 transition-colors hover:border-accent/50 hover:text-accent">
+					{q}
+				</button>
+			))
+		}
+	</div>
+
+	<form id="chat-form" class="flex items-center gap-3 border-t border-line px-6 py-4">
+		<input
+			id="chat-input"
+			type="text"
+			autocomplete="off"
+			placeholder="Frag etwas, z.B. Lieferzeit..."
+			class="flex-1 rounded-full border border-line bg-transparent px-4 py-2.5 text-sm text-ink placeholder:text-ink/40 focus:border-accent/50 focus:outline-none"
+		/>
+		<button
+			type="submit"
+			class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-ink text-paper transition-colors hover:bg-accent"
+			aria-label="Senden"
+		>
+			<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+				<path d="M5 12h14m0 0-6-6m6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+			</svg>
+		</button>
+	</form>
+</div>
+
+<script define:vars={{ intents, fallback }}>
+	const log = document.getElementById('chat-log');
+	const form = document.getElementById('chat-form');
+	const input = document.getElementById('chat-input');
+	const quickReplyButtons = document.querySelectorAll('.chat-quick-reply');
+
+	function scrollToBottom() {
+		log.scrollTop = log.scrollHeight;
+	}
+
+	function addBubble(text, from) {
+		const bubble = document.createElement('div');
+		bubble.className = `chat-bubble chat-bubble-${from}`;
+		bubble.textContent = text;
+		log.appendChild(bubble);
+		scrollToBottom();
+	}
+
+	function addTypingIndicator() {
+		const typing = document.createElement('div');
+		typing.className = 'chat-bubble chat-bubble-bot chat-typing';
+		typing.id = 'chat-typing';
+		typing.innerHTML = '<span></span><span></span><span></span>';
+		log.appendChild(typing);
+		scrollToBottom();
+	}
+
+	function removeTypingIndicator() {
+		document.getElementById('chat-typing')?.remove();
+	}
+
+	function findResponse(text) {
+		const normalized = text.toLowerCase();
+		let best = null;
+		let bestScore = 0;
+		for (const intent of intents) {
+			const score = intent.keywords.filter((k) => normalized.includes(k)).length;
+			if (score > bestScore) {
+				bestScore = score;
+				best = intent;
+			}
+		}
+		return best ? best.response : fallback;
+	}
+
+	function handleUserMessage(text) {
+		if (!text.trim()) return;
+		addBubble(text, 'user');
+		addTypingIndicator();
+		const delay = 500 + Math.random() * 500;
+		setTimeout(() => {
+			removeTypingIndicator();
+			addBubble(findResponse(text), 'bot');
+		}, delay);
+	}
+
+	form?.addEventListener('submit', (event) => {
+		event.preventDefault();
+		const text = input.value;
+		input.value = '';
+		handleUserMessage(text);
+	});
+
+	quickReplyButtons.forEach((btn) => {
+		btn.addEventListener('click', () => handleUserMessage(btn.textContent?.trim() || ''));
+	});
+</script>
