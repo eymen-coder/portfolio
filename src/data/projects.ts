@@ -12,6 +12,15 @@ const thesisPdf = '/eymen-guelmez-projektthesis-sap-s4hana.pdf';
 
 export const projects: Project[] = [
 	{
+		title: 'Urlaubsantrag-Tool',
+		description:
+			'Voll funktionsfähiger Genehmigungsworkflow mit drei Rollen (Mitarbeiter, Vorgesetzter, HR), echter Postgres-Datenbank und Row-Level-Security statt reiner Frontend-Logik. Live mit Demo-Zugängen testbar.',
+		tags: ['Next.js', 'Supabase', 'PostgreSQL'],
+		link: 'https://urlaubsantrag-tool-inky.vercel.app/login',
+		repo: 'https://github.com/eymen-coder/urlaubsantrag-tool',
+		image: '/project-urlaubsantrag.jpg',
+	},
+	{
 		title: 'SAP S/4HANA Case Study',
 		description:
 			'Konzeptstudie zur ERP-Einführung bei einem fiktiven Handelsunternehmen: Prozessanalyse, Soll-Konzept, Projektplanung mit Zeitplan, Risiken und Stakeholdern.',

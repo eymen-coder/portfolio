@@ -27,6 +27,25 @@ function tagLine(text, y) {
 
 const items = [
 	{
+		file: 'project-urlaubsantrag.jpg',
+		svg: wrap(`
+			<circle cx="140" cy="110" r="38" fill="none" stroke="${accent}" stroke-width="3" />
+			<path d="M 178 110 L 226 110 M 219 103 L 226 110 L 219 117" stroke="${ink}" stroke-opacity="0.5" stroke-width="2.5" fill="none" />
+			<circle cx="264" cy="110" r="38" fill="none" stroke="${nebula}" stroke-width="3" />
+			<path d="M 302 110 L 350 110 M 343 103 L 350 110 L 343 117" stroke="${ink}" stroke-opacity="0.5" stroke-width="2.5" fill="none" />
+			<circle cx="388" cy="110" r="38" fill="none" stroke="${accent}" stroke-width="3" />
+
+			<rect x="600" y="70" width="192" height="80" rx="18" fill="${accent}" />
+			<path d="M 656 112 L 682 136 L 736 84" stroke="#3a2a10" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+
+			<rect x="76" y="220" width="640" height="16" rx="8" fill="${line}" />
+			<rect x="76" y="220" width="420" height="16" rx="8" fill="${nebula}" />
+			<text x="76" y="266" font-size="18" fill="${ink}" fill-opacity="0.5" ${font}>19 / 30 Urlaubstage verbleibend</text>
+
+			${tagLine('Next.js · Supabase · Row-Level-Security', 396)}
+		`),
+	},
+	{
 		file: 'case-study-preview.jpg',
 		svg: wrap(`
 			<rect x="76" y="66" width="180" height="72" rx="16" fill="none" stroke="${accent}" stroke-width="2.5" />
