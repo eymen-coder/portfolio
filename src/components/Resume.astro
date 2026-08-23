@@ -1,0 +1,25 @@
+---
+const resumePdf = '/eymen-guelmez-lebenslauf.pdf';
+---
+
+<section id="lebenslauf" class="reveal mx-auto max-w-5xl scroll-mt-24 px-6 py-24">
+	<div
+		class="grid gap-8 rounded-3xl border border-line px-8 py-12 sm:grid-cols-[1fr_auto] sm:items-center sm:px-12"
+	>
+		<div>
+			<h2 class="text-3xl font-semibold tracking-tight text-ink">Lebenslauf</h2>
+			<p class="mt-4 max-w-xl text-ink/60">
+				Stationen, Kompetenzen und Ausbildung im Überblick, als PDF zum Herunterladen. Für alle
+				Details darüber hinaus einfach weiter unten in den Projekten oder direkt im Kontakt
+				vorbeischauen.
+			</p>
+		</div>
+		<a
+			href={resumePdf}
+			download
+			class="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-semibold text-paper transition-colors hover:bg-accent"
+		>
+			Lebenslauf herunterladen ↓
+		</a>
+	</div>
+</section>
