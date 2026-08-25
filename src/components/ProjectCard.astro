@@ -10,7 +10,7 @@ const { project, index } = Astro.props;
 ---
 
 <article
-	class="reveal group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-paper transition-colors hover:border-accent/40"
+	class="tilt-card reveal group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-paper transition-colors hover:border-accent/40"
 	style={`transition-delay: ${index * 90}ms`}
 >
 	{project.image && <img src={project.image} alt="" class="h-32 w-full object-cover" loading="lazy" />}

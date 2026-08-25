@@ -329,6 +329,24 @@ body.header-hidden .subnav-below-header {
 	}
 }
 
+/* ── HERO WORD SPLIT ── */
+.hw {
+	display: inline-block;
+	overflow: hidden;
+	vertical-align: bottom;
+	line-height: inherit;
+}
+
+.hwi {
+	display: inline-block;
+}
+
+/* ── CARD TILT ── */
+.tilt-card {
+	transform-style: preserve-3d;
+	will-change: transform;
+}
+
 @media (prefers-reduced-motion: reduce) {
 	.reveal,
 	.reveal-scale,
@@ -338,11 +356,18 @@ body.header-hidden .subnav-below-header {
 	.menu-panel,
 	.menu-link,
 	.menu-stars,
-	.menu-glow-line {
+	.menu-glow-line,
+	.hw,
+	.hwi,
+	.hero-badge,
+	.hero-desc,
+	.hero-cta a,
+	.hero-portrait {
 		animation: none !important;
 		transition: none !important;
 		transform: none !important;
 		clip-path: none !important;
 		opacity: 1 !important;
 	}
+
 }

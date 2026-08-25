@@ -42,11 +42,11 @@ const skills = [
 			</p>
 			<div class="mt-8 flex flex-wrap gap-x-8 gap-y-3">
 				<div>
-					<span class="text-2xl font-semibold text-ink">{projects.length}</span>
+					<span class="text-2xl font-semibold text-ink" data-count={projects.length}>{projects.length}</span>
 					<span class="ml-1.5 text-sm text-ink/50">Projekte im Portfolio</span>
 				</div>
 				<div>
-					<span class="text-2xl font-semibold text-ink">{skills.length}</span>
+					<span class="text-2xl font-semibold text-ink" data-count={skills.length}>{skills.length}</span>
 					<span class="ml-1.5 text-sm text-ink/50">Kernkompetenzen</span>
 				</div>
 			</div>
@@ -57,7 +57,7 @@ const skills = [
 		{
 			skills.map((skill, i) => (
 				<div
-					class="reveal flex items-center justify-between gap-4 border-b border-line py-4 [break-inside:avoid]"
+					class="skill-row reveal flex items-center justify-between gap-4 border-b border-line py-4 [break-inside:avoid]"
 					style={`transition-delay: ${i * 60}ms`}
 				>
 					<div class="flex items-baseline gap-4">

@@ -46,6 +46,9 @@ const ogImage = `${siteUrl}/og-image.jpg`;
 		<Preloader />
 		<slot />
 		<script>
+			import '../scripts/animations';
+		</script>
+		<script>
 			const observer = new IntersectionObserver(
 				(entries) => {
 					for (const entry of entries) {

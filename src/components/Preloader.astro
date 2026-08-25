@@ -161,6 +161,7 @@ const tips = [
 				barEl.style.width = '100%';
 				preloader.classList.add('is-done');
 				document.body.classList.remove('overflow-hidden');
+				window.dispatchEvent(new CustomEvent('preloader:done'));
 				setTimeout(() => preloader.remove(), 700);
 			}, wait);
 		};
