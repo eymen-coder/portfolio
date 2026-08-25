@@ -1,0 +1,166 @@
+---
+// Horizontale "Limelight"-Navigation: Icon-Leiste mit gleitendem
+// Lichtstrahl, der die aktive Sektion markiert (Scroll-Spy-gesteuert).
+// Vanilla-Astro-Nachbau der 21st.dev LimelightNav (React -> ohne Framework).
+
+const items = [
+	{ hash: '#ueber-mich', label: 'Über mich', icon: 'user' },
+	{ hash: '#lebenslauf', label: 'Lebenslauf', icon: 'file' },
+	{ hash: '#projekte', label: 'Projekte', icon: 'grid' },
+	{ hash: '#hobbies', label: 'Neben der Arbeit', icon: 'heart' },
+	{ hash: '#wie-ich-arbeite', label: 'Wie ich arbeite', icon: 'compass' },
+	{ hash: '#kontakt', label: 'Kontakt', icon: 'mail' },
+];
+
+// lucide-Icon-Pfade (currentColor, stroke-basiert)
+const icons: Record<string, string> = {
+	user: '<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+	file: '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/>',
+	grid: '<rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/>',
+	heart: '<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.5 4.04 3 5.5l7 7Z"/>',
+	compass: '<circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>',
+	mail: '<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>',
+};
+---
+
+<nav
+	class="limelight-nav relative inline-flex h-12 items-center rounded-full border border-line bg-surface/80 px-1.5 backdrop-blur"
+	aria-label="Hauptnavigation"
+>
+	{
+		items.map((it) => (
+			<a
+				href={`/${it.hash}`}
+				data-ll-item
+				data-target={it.hash}
+				aria-label={it.label}
+				class="ll-item group relative z-20 flex h-full items-center justify-center px-3"
+			>
+				<svg
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					class="ll-icon h-5 w-5 text-ink opacity-40 transition-opacity duration-200"
+					set:html={icons[it.icon]}
+				/>
+				<span
+					class="ll-tooltip pointer-events-none absolute top-full left-1/2 mt-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-line bg-surface px-2 py-1 text-[11px] font-medium text-ink opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+				>
+					{it.label}
+				</span>
+			</a>
+		))
+	}
+
+	<div class="ll-beam" data-ll-beam aria-hidden="true">
+		<div class="ll-cone"></div>
+	</div>
+</nav>
+
+<style>
+	.ll-beam {
+		position: absolute;
+		top: 0;
+		left: -999px;
+		z-index: 10;
+		width: 2rem;
+		height: 4px;
+		border-radius: 9999px;
+		background: var(--color-accent);
+		box-shadow: 0 0 12px 2px color-mix(in srgb, var(--color-accent) 70%, transparent);
+	}
+
+	.ll-beam.is-ready {
+		transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	.ll-cone {
+		position: absolute;
+		left: -30%;
+		top: 4px;
+		width: 160%;
+		height: 3rem;
+		clip-path: polygon(5% 100%, 25% 0, 75% 0, 95% 100%);
+		background: linear-gradient(
+			to bottom,
+			color-mix(in srgb, var(--color-accent) 32%, transparent),
+			transparent
+		);
+		pointer-events: none;
+	}
+
+	.ll-item.is-active .ll-icon {
+		opacity: 1;
+		color: var(--color-accent);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.ll-beam.is-ready {
+			transition: none;
+		}
+	}
+</style>
+
+<script>
+	const nav = document.querySelector<HTMLElement>('.limelight-nav');
+	const beam = document.querySelector<HTMLElement>('[data-ll-beam]');
+	const navItems = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-ll-item]'));
+
+	if (nav && beam && navItems.length) {
+		let activeIndex = 0;
+
+		function moveBeam(index: number) {
+			const item = navItems[index];
+			if (!item || !beam) return;
+			const left = item.offsetLeft + item.offsetWidth / 2 - beam.offsetWidth / 2;
+			beam.style.left = `${left}px`;
+		}
+
+		function setActive(index: number) {
+			if (index < 0 || index === activeIndex) return;
+			activeIndex = index;
+			navItems.forEach((el, i) => el.classList.toggle('is-active', i === index));
+			moveBeam(index);
+		}
+
+		// Erst-Positionierung ohne Transition, dann Transition aktivieren
+		navItems[0].classList.add('is-active');
+		requestAnimationFrame(() => {
+			moveBeam(0);
+			setTimeout(() => beam.classList.add('is-ready'), 60);
+		});
+
+		// Klick -> sofort aktiv setzen (Scroll übernimmt der Anchor)
+		navItems.forEach((el, i) => {
+			el.addEventListener('click', () => setActive(i));
+		});
+
+		// Scroll-Spy: aktive Sektion bestimmt den Lichtstrahl
+		const sections = navItems
+			.map((el) => document.querySelector<HTMLElement>(el.dataset.target || ''))
+			.filter((el): el is HTMLElement => el !== null);
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (entry.isIntersecting) {
+						const idx = sections.findIndex((s) => s === entry.target);
+						if (idx !== -1) setActive(idx);
+					}
+				}
+			},
+			{ rootMargin: '-45% 0px -45% 0px' },
+		);
+		sections.forEach((s) => observer.observe(s));
+
+		// Bei Resize neu positionieren
+		let resizeTimer: number;
+		window.addEventListener('resize', () => {
+			window.clearTimeout(resizeTimer);
+			resizeTimer = window.setTimeout(() => moveBeam(activeIndex), 100);
+		});
+	}
+</script>
