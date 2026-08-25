@@ -46,6 +46,8 @@ export const projects: Project[] = [
 		link: '/chat-assistant',
 		image: '/project-chat-assistant.jpg',
 		highlight: 'Intent-Erkennung · interaktive Live-Demo',
+		learning:
+			'Ich habe verstanden, wie man Nutzer-Eingaben in Absichten (Intents) übersetzt — und wo simples Keyword-Matching an Grenzen stößt und eine echte LLM-Integration sinnvoll wird.',
 	},
 	{
 		title: 'Interview-Boss-Battle',
@@ -55,6 +57,8 @@ export const projects: Project[] = [
 		link: '/interview-boss',
 		image: '/project-interview-boss.jpg',
 		highlight: 'Synthetisierte Sounds · spielbar im Browser',
+		learning:
+			'Ein Spaßprojekt, bei dem ich gelernt habe, mit der Web Audio API Sounds direkt im Browser zu erzeugen und mit kleinen Effekten wie Screen-Shake ein Interface lebendiger zu machen.',
 	},
 	{
 		title: 'Stundenplan-Webseite',
@@ -63,6 +67,8 @@ export const projects: Project[] = [
 		tags: ['HTML', 'CSS', 'JavaScript'],
 		image: '/project-stundenplan.jpg',
 		highlight: 'Hochschulprojekt · FH Dortmund',
+		learning:
+			'Mein früher Einstieg in strukturiertes Frontend: Daten übersichtlich darstellen und Zustände im Browser mit purem JavaScript verwalten.',
 	},
 	{
 		title: 'Kontakt-App',
@@ -71,6 +77,8 @@ export const projects: Project[] = [
 		tags: ['Java', 'JavaFX'],
 		image: '/project-kontakt.jpg',
 		highlight: 'Hochschulprojekt · FH Dortmund',
+		learning:
+			'Erste Erfahrung mit objektorientierter Desktop-Entwicklung in Java/JavaFX — und der sauberen Trennung von Daten, Logik und Oberfläche.',
 	},
 	{
 		title: 'SAP S/4HANA Betriebsmodelle',
@@ -81,5 +89,7 @@ export const projects: Project[] = [
 		link: thesisPdf,
 		download: true,
 		highlight: 'Vergleichsanalyse · als PDF verfügbar',
+		learning:
+			'Ich habe gelernt, Betriebsmodelle strukturiert nach Kriterien zu vergleichen und eine Empfehlung sachlich zu begründen, statt nur Vor- und Nachteile aufzulisten.',
 	},
 ];
