@@ -14,12 +14,39 @@ const letters = name.split('').map((ch) => (ch === ' ' ? ' ' : ch));
 
 <header class="header-autohide sticky top-0 z-50 border-b border-line/80 bg-paper/85 backdrop-blur transition-transform duration-300">
 	<nav class="relative mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
-		<a href="/" class="logo text-lg font-semibold tracking-tight text-ink">
-			{letters.map((ch, i) => (
-				<span class="letter" style={`transition-delay: ${i * 18}ms`}>
-					{ch}
-				</span>
-			))}
+		<a href="/" class="logo flex items-center gap-2.5 text-lg font-semibold tracking-tight text-ink">
+			<span class="logo-mark inline-flex h-9 w-9 shrink-0 items-center justify-center" aria-hidden="true">
+				<svg viewBox="0 0 44 44" class="h-full w-full" fill="none">
+					<rect
+						x="1.5"
+						y="1.5"
+						width="41"
+						height="41"
+						rx="13"
+						stroke="var(--color-accent)"
+						stroke-opacity="0.55"
+						stroke-width="1.5"
+					></rect>
+					<text
+						x="22"
+						y="19.5"
+						text-anchor="middle"
+						dominant-baseline="central"
+						font-family="'General Sans', 'Arial', sans-serif"
+						font-weight="600"
+						font-size="17"
+						letter-spacing="-1"
+						fill="currentColor">EG</text>
+					<rect class="logo-bar" x="14.5" y="30" width="15" height="2" rx="1" fill="var(--color-accent)"></rect>
+				</svg>
+			</span>
+			<span class="logo-word hidden sm:inline">
+				{letters.map((ch, i) => (
+					<span class="letter" style={`transition-delay: ${i * 18}ms`}>
+						{ch}
+					</span>
+				))}
+			</span>
 		</a>
 
 		<button

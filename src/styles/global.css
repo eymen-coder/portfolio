@@ -88,6 +88,23 @@ body {
 	color: var(--color-accent);
 }
 
+.logo-mark svg {
+	transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.logo:hover .logo-mark svg {
+	transform: scale(1.06);
+}
+
+.logo-bar {
+	transform-origin: center;
+	transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.logo:hover .logo-bar {
+	transform: scaleX(1.35);
+}
+
 .menu-trigger .bar {
 	position: absolute;
 	width: 14px;
