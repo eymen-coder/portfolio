@@ -98,6 +98,36 @@ function initMagnetic() {
 	});
 }
 
+// ── SCROLL TEXT REVEAL ───────────────────────────────────────────────────────
+function initTextReveal() {
+	document.querySelectorAll<HTMLElement>('.text-reveal').forEach(el => {
+		const text = el.textContent || '';
+		el.innerHTML = text
+			.split(/(\s+)/)
+			.map(part =>
+				part.trim() ? `<span class="tr-word">${part}</span>` : part,
+			)
+			.join('');
+
+		const words = el.querySelectorAll<HTMLElement>('.tr-word');
+
+		const tl = gsap.timeline({
+			scrollTrigger: {
+				trigger: el,
+				start: 'top 82%',
+				end: 'bottom 22%',
+				scrub: 1.5,
+			},
+		});
+
+		tl.fromTo(
+			words,
+			{ color: 'rgba(245, 240, 230, 0.15)' },
+			{ color: 'rgba(245, 240, 230, 0.9)', stagger: 0.06, ease: 'none' },
+		);
+	});
+}
+
 // ── APPROACH STEPS ───────────────────────────────────────────────────────────
 function initApproach() {
 	const steps = document.querySelectorAll<HTMLElement>('.approach-step');
@@ -122,6 +152,7 @@ function boot() {
 	initCounters();
 	initTilt();
 	initMagnetic();
+	initTextReveal();
 	initApproach();
 }
 

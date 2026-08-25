@@ -362,7 +362,8 @@ body.header-hidden .subnav-below-header {
 	.hero-badge,
 	.hero-desc,
 	.hero-cta a,
-	.hero-portrait {
+	.hero-portrait,
+	.tr-word {
 		animation: none !important;
 		transition: none !important;
 		transform: none !important;
