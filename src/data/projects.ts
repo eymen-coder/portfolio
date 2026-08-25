@@ -6,6 +6,7 @@ export interface Project {
 	repo?: string;
 	image?: string;
 	download?: boolean;
+	highlight?: string;
 }
 
 const thesisPdf = '/eymen-guelmez-projektthesis-sap-s4hana.pdf';
@@ -19,6 +20,7 @@ export const projects: Project[] = [
 		link: 'https://urlaubsantrag-tool-inky.vercel.app/login',
 		repo: 'https://github.com/eymen-coder/urlaubsantrag-tool',
 		image: '/project-urlaubsantrag.jpg',
+		highlight: '3 Rollen · Row-Level-Security · Live-Demo',
 	},
 	{
 		title: 'SAP S/4HANA Case Study',
@@ -27,6 +29,7 @@ export const projects: Project[] = [
 		tags: ['SAP', 'Prozessanalyse', 'Projektmanagement'],
 		link: '/case-study',
 		image: '/case-study-preview.jpg',
+		highlight: 'Ist-Analyse bis Soll-Konzept mit Projektplan',
 	},
 	{
 		title: 'KI-Support-Assistent',
@@ -35,6 +38,7 @@ export const projects: Project[] = [
 		tags: ['Conversational UX', 'JavaScript', 'Prototyping'],
 		link: '/chat-assistant',
 		image: '/project-chat-assistant.jpg',
+		highlight: 'Intent-Erkennung · interaktive Live-Demo',
 	},
 	{
 		title: 'Interview-Boss-Battle',
@@ -43,6 +47,7 @@ export const projects: Project[] = [
 		tags: ['Spiel', 'Web Audio API', 'JavaScript'],
 		link: '/interview-boss',
 		image: '/project-interview-boss.jpg',
+		highlight: 'Synthetisierte Sounds · spielbar im Browser',
 	},
 	{
 		title: 'Stundenplan-Webseite',
@@ -50,6 +55,7 @@ export const projects: Project[] = [
 			'Webanwendung zur Verwaltung und Anzeige von Stundenplänen, entwickelt als Hochschulprojekt an der FH Dortmund.',
 		tags: ['HTML', 'CSS', 'JavaScript'],
 		image: '/project-stundenplan.jpg',
+		highlight: 'Hochschulprojekt · FH Dortmund',
 	},
 	{
 		title: 'Kontakt-App',
@@ -57,6 +63,7 @@ export const projects: Project[] = [
 			'Anwendung zur Verwaltung von Kontakten mit Java und JavaFX, entwickelt als Hochschulprojekt an der FH Dortmund.',
 		tags: ['Java', 'JavaFX'],
 		image: '/project-kontakt.jpg',
+		highlight: 'Hochschulprojekt · FH Dortmund',
 	},
 	{
 		title: 'SAP S/4HANA Betriebsmodelle',
@@ -66,5 +73,6 @@ export const projects: Project[] = [
 		image: '/project-sap-betriebsmodelle.jpg',
 		link: thesisPdf,
 		download: true,
+		highlight: 'Vergleichsanalyse · als PDF verfügbar',
 	},
 ];
