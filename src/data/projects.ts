@@ -39,6 +39,18 @@ export const projects: Project[] = [
 			'Ich habe gelernt, ein Projekt nicht nur technisch, sondern von der Prozess- und Stakeholder-Seite zu denken — Zeitplan, Risiken und Beteiligte gehören genauso dazu wie die Lösung selbst.',
 	},
 	{
+		title: 'SAP S/4HANA Betriebsmodelle',
+		description:
+			'Vergleichsanalyse verschiedener SAP S/4HANA Betriebsmodelle im Rahmen eines Hochschulprojekts.',
+		tags: ['SAP', 'ERP', 'Analyse'],
+		image: '/project-sap-betriebsmodelle.jpg',
+		link: thesisPdf,
+		download: true,
+		highlight: 'Vergleichsanalyse · als PDF verfügbar',
+		learning:
+			'Ich habe gelernt, Betriebsmodelle strukturiert nach Kriterien zu vergleichen und eine Empfehlung sachlich zu begründen, statt nur Vor- und Nachteile aufzulisten.',
+	},
+	{
 		title: 'KI-Support-Assistent',
 		description:
 			'Prototyp eines Chat-Assistenten für einen Online-Shop: Intent-Erkennung per Keyword-Matching, als Ausgangspunkt für eine echte LLM-Integration gebaut.',
@@ -79,17 +91,5 @@ export const projects: Project[] = [
 		highlight: 'Hochschulprojekt · FH Dortmund',
 		learning:
 			'Erste Erfahrung mit objektorientierter Desktop-Entwicklung in Java/JavaFX — und der sauberen Trennung von Daten, Logik und Oberfläche.',
-	},
-	{
-		title: 'SAP S/4HANA Betriebsmodelle',
-		description:
-			'Vergleichsanalyse verschiedener SAP S/4HANA Betriebsmodelle im Rahmen eines Hochschulprojekts.',
-		tags: ['SAP', 'ERP', 'Analyse'],
-		image: '/project-sap-betriebsmodelle.jpg',
-		link: thesisPdf,
-		download: true,
-		highlight: 'Vergleichsanalyse · als PDF verfügbar',
-		learning:
-			'Ich habe gelernt, Betriebsmodelle strukturiert nach Kriterien zu vergleichen und eine Empfehlung sachlich zu begründen, statt nur Vor- und Nachteile aufzulisten.',
 	},
 ];

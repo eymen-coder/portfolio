@@ -34,7 +34,7 @@ const icons: Record<string, string> = {
 				data-ll-item
 				data-target={it.hash}
 				aria-label={it.label}
-				class="ll-item group relative z-20 flex h-full items-center justify-center px-3"
+				class="ll-item group relative z-20 flex h-full items-center justify-center rounded-full px-3 transition-colors hover:bg-ink/5"
 			>
 				<svg
 					viewBox="0 0 24 24"
@@ -93,9 +93,23 @@ const icons: Record<string, string> = {
 		pointer-events: none;
 	}
 
+	.ll-icon {
+		transition: opacity 0.2s ease, transform 0.2s ease, color 0.2s ease;
+	}
+
+	/* Hover: Icon wird heller und hebt sich leicht */
+	.ll-item:hover .ll-icon {
+		opacity: 0.85;
+		transform: translateY(-2px);
+	}
+
 	.ll-item.is-active .ll-icon {
 		opacity: 1;
 		color: var(--color-accent);
+	}
+
+	.ll-item.is-active:hover .ll-icon {
+		opacity: 1;
 	}
 
 	/* Aktives Label nur auf Desktop inline zeigen (Mobile bleibt icon-only) */
