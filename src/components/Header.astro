@@ -51,29 +51,29 @@ const letters = name.split('').map((ch) => (ch === ' ' ? ' ' : ch));
 	const header = document.querySelector<HTMLElement>('.header-autohide');
 	let lastY = window.scrollY;
 	let headerHidden = false;
+	// merkt sich, ob der Header nur wegen Maus-am-Rand sichtbar ist
+	let revealedByHover = false;
+
+	function setHidden(hidden: boolean) {
+		if (hidden === headerHidden) return;
+		header?.style.setProperty('transform', hidden ? 'translateY(-100%)' : 'translateY(0)');
+		document.body.classList.toggle('header-hidden', hidden);
+		headerHidden = hidden;
+	}
 
 	function updateHeaderVisibility() {
 		const currentY = window.scrollY;
 		const scrollingDown = currentY > lastY;
 		const pastThreshold = currentY > 100;
 
-		if (scrollingDown && pastThreshold && !headerHidden) {
-			header?.style.setProperty('transform', 'translateY(-100%)');
-			document.body.classList.add('header-hidden');
-			headerHidden = true;
-		} else if ((!scrollingDown || !pastThreshold) && headerHidden) {
-			header?.style.setProperty('transform', 'translateY(0)');
-			document.body.classList.remove('header-hidden');
-			headerHidden = false;
+		if (scrollingDown && pastThreshold) {
+			setHidden(true);
+		} else if (!scrollingDown || !pastThreshold) {
+			// Hochscrollen blendet dauerhaft ein (nicht per Maus wieder ausblenden)
+			setHidden(false);
+			revealedByHover = false;
 		}
 		lastY = currentY;
-	}
-
-	function showHeader() {
-		if (!headerHidden) return;
-		header?.style.setProperty('transform', 'translateY(0)');
-		document.body.classList.remove('header-hidden');
-		headerHidden = false;
 	}
 
 	let ticking = false;
@@ -91,11 +91,20 @@ const letters = name.split('').map((ch) => (ch === ' ' ? ' ' : ch));
 		{ passive: true },
 	);
 
-	// Header auch einblenden, wenn die Maus an den oberen Bildschirmrand fährt
+	// Maus am oberen Rand -> einblenden; Maus wieder weg -> wieder ausblenden
 	document.addEventListener(
 		'mousemove',
 		(event) => {
-			if (event.clientY <= 80) showHeader();
+			if (window.scrollY <= 100) return; // ganz oben ist der Header ohnehin da
+			if (event.clientY <= 80) {
+				if (headerHidden) {
+					setHidden(false);
+					revealedByHover = true;
+				}
+			} else if (event.clientY > 110 && revealedByHover) {
+				setHidden(true);
+				revealedByHover = false;
+			}
 		},
 		{ passive: true },
 	);
