@@ -1,25 +1,193 @@
 ---
 const resumePdf = '/eymen-guelmez-lebenslauf.pdf';
+
+type EventType = 'edu' | 'work' | 'cert';
+
+const timeline: {
+	period: string;
+	title: string;
+	org: string;
+	type: EventType;
+	active?: boolean;
+	bullets?: string[];
+}[] = [
+	{
+		period: '2017 – 2020',
+		title: 'Abitur',
+		org: 'Anne-Frank-Gesamtschule · Dortmund',
+		type: 'edu',
+		bullets: ['Allgemeine Hochschulreife', 'Sekundarstufe 2'],
+	},
+	{
+		period: '2020 – 2021',
+		title: 'B.A. Betriebswirtschaftslehre',
+		org: 'Dortmund',
+		type: 'edu',
+		bullets: ['Studium der Betriebswirtschaftslehre', 'Wechsel zur Wirtschaftsinformatik'],
+	},
+	{
+		period: '2020 – 2021',
+		title: 'Werkstudent Logistik',
+		org: 'DHL Express · Dortmund',
+		type: 'work',
+		bullets: [
+			'Warenwirtschaftssystem & Logistikdaten',
+			'Qualitätskontrolle & Lagerorganisation',
+			'Koordination des Warentransports',
+		],
+	},
+	{
+		period: '2021 – heute',
+		title: 'B.Sc. Wirtschaftsinformatik',
+		org: 'Fachhochschule Dortmund',
+		type: 'edu',
+		active: true,
+		bullets: [
+			'Schwerpunkt IT-Beratung & Projektmanagement',
+			'Projekte: SAP S/4HANA, Web-Entwicklung, Datenbanken',
+			'Kurz vor dem Abschluss',
+		],
+	},
+	{
+		period: 'IBM SkillsBuild',
+		title: 'Zertifikate',
+		org: 'IBM SkillsBuild',
+		type: 'cert',
+		bullets: [
+			'Cloud Computing Fundamentals',
+			'Project Management Fundamentals',
+		],
+	},
+	{
+		period: 'Jul 2026 – heute',
+		title: 'Werkstudent E-Commerce',
+		org: 'rabeconcept · Bochum',
+		type: 'work',
+		active: true,
+		bullets: [
+			'Pflege & Weiterentwicklung von Online-Shops',
+			'Tracking-Konzept für Matomo Webanalyse',
+			'A/B-Testing zur datenbasierten Shop-Optimierung',
+			'Technische Unterstützung bei Shop-Systemen',
+		],
+	},
+];
+
+const getDotClass = (item: { type: EventType; active?: boolean }) =>
+	item.active
+		? 'border-accent bg-paper shadow-[0_0_10px_2px_color-mix(in_srgb,var(--color-accent)_35%,transparent)]'
+		: 'border-line/60 bg-paper';
+
+const cardBorder: Record<EventType, string> = {
+	edu: 'border-line',
+	work: 'border-accent/25',
+	cert: 'border-nebula/25',
+};
+
+const getPeriodColor = (item: { type: EventType; active?: boolean }) => {
+	if (item.type === 'cert') return 'text-nebula';
+	if (item.active) return 'text-accent';
+	return 'text-ink/40';
+};
 ---
 
-<section id="lebenslauf" class="reveal mx-auto max-w-5xl scroll-mt-24 px-6 py-24">
-	<div
-		class="grid gap-8 rounded-3xl border border-line px-8 py-12 sm:grid-cols-[1fr_auto] sm:items-center sm:px-12"
-	>
-		<div>
-			<h2 class="text-3xl font-semibold tracking-tight text-ink">Lebenslauf</h2>
-			<p class="mt-4 max-w-xl text-ink/60">
-				Stationen, Kompetenzen und Ausbildung im Überblick, als PDF zum Herunterladen. Für alle
-				Details darüber hinaus einfach weiter unten in den Projekten oder direkt im Kontakt
-				vorbeischauen.
-			</p>
+<section id="lebenslauf" class="reveal scroll-mt-24 px-6 py-24">
+	<div class="mx-auto max-w-5xl">
+		<div class="flex flex-wrap items-start justify-between gap-6">
+			<div>
+				<h2 class="text-3xl font-semibold tracking-tight text-ink">Lebenslauf</h2>
+				<p class="mt-2 text-sm text-ink/40">Hover über die Stationen für Details.</p>
+			</div>
+			<a
+				href={resumePdf}
+				download
+				class="magnetic inline-flex shrink-0 items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-paper transition-colors hover:bg-accent"
+			>
+				PDF herunterladen ↓
+			</a>
 		</div>
-		<a
-			href={resumePdf}
-			download
-			class="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-semibold text-paper transition-colors hover:bg-accent"
-		>
-			Lebenslauf herunterladen ↓
-		</a>
+
+		<div class="mt-14 overflow-x-auto pb-6">
+			<div class="relative min-w-[680px]">
+				<div class="absolute top-[0.45rem] right-6 left-6 h-px bg-gradient-to-r from-transparent via-line to-transparent"></div>
+
+				<div class="relative flex items-start justify-between gap-2">
+					{
+						timeline.map((item, i) => (
+							<div class="timeline-item relative flex flex-col items-center">
+								<div
+									class={`timeline-hover-card absolute z-20 w-48 rounded-2xl border p-4 ${cardBorder[item.type]}`}
+									style={
+										i === 0
+											? 'left: 0'
+											: i === timeline.length - 1
+												? 'right: 0'
+												: `left: 50%; margin-left: -6rem`
+									}
+								>
+									<span class={`text-[10px] font-medium ${getPeriodColor(item)}`}>{item.period}</span>
+									<p class="mt-1 text-sm font-semibold leading-snug text-ink">{item.title}</p>
+									<p class="mt-0.5 text-[11px] text-ink/40">{item.org}</p>
+									{item.bullets && (
+										<ul class="mt-3 space-y-1.5">
+											{item.bullets.map((b) => (
+												<li class="flex items-start gap-1.5 text-[11px] leading-snug text-ink/55">
+													<span class="mt-[5px] h-1 w-1 shrink-0 rounded-full bg-accent/50" />
+													{b}
+												</li>
+											))}
+										</ul>
+									)}
+								</div>
+
+								<div class={`relative z-10 h-[0.9rem] w-[0.9rem] rounded-full border-2 transition-all duration-300 ${getDotClass(item)}`}>
+									{item.active && (
+										<span class="absolute inset-0 animate-ping rounded-full bg-accent/25" />
+									)}
+								</div>
+
+								<div class="mt-3 flex flex-col items-center gap-0.5 px-1 text-center">
+									<span class="max-w-[6.5rem] text-[11px] font-medium leading-tight text-ink/70">
+										{item.title}
+									</span>
+									<span class={`text-[10px] ${getPeriodColor(item)}`}>{item.period}</span>
+								</div>
+							</div>
+						))
+					}
+				</div>
+			</div>
+		</div>
 	</div>
 </section>
+
+<style>
+	.timeline-hover-card {
+		bottom: calc(100% + 0.75rem);
+		background-color: var(--color-surface);
+		opacity: 0;
+		transform: translateY(6px);
+		pointer-events: none;
+		transition:
+			opacity 0.25s ease,
+			transform 0.25s ease;
+		box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.7);
+	}
+
+	.timeline-item:hover .timeline-hover-card {
+		opacity: 1;
+		transform: translateY(0);
+		pointer-events: auto;
+	}
+
+	.timeline-item:hover .timeline-hover-card,
+	.timeline-hover-card:hover {
+		opacity: 1;
+		transform: translateY(0);
+		pointer-events: auto;
+	}
+
+	.timeline-item {
+		flex: 1;
+	}
+</style>
