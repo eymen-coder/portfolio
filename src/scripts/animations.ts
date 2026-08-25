@@ -99,32 +99,41 @@ function initMagnetic() {
 }
 
 // ── SCROLL TEXT REVEAL ───────────────────────────────────────────────────────
+function splitWords(el: HTMLElement) {
+	el.innerHTML = (el.textContent || '')
+		.split(/(\s+)/)
+		.map(part => (part.trim() ? `<span class="tr-word">${part}</span>` : part))
+		.join('');
+}
+
+function animateWords(words: NodeListOf<HTMLElement>, trigger: HTMLElement) {
+	const tl = gsap.timeline({
+		scrollTrigger: {
+			trigger,
+			start: 'top 78%',
+			end: 'bottom 20%',
+			scrub: 1.5,
+		},
+	});
+	tl.fromTo(
+		words,
+		{ color: 'rgba(245, 240, 230, 0.15)' },
+		{ color: 'rgba(245, 240, 230, 0.9)', stagger: 0.06, ease: 'none' },
+	);
+}
+
 function initTextReveal() {
+	// Grouped blocks: all paragraphs flow as one sequence
+	document.querySelectorAll<HTMLElement>('[data-text-flow]').forEach(container => {
+		container.querySelectorAll<HTMLElement>('.text-reveal').forEach(splitWords);
+		animateWords(container.querySelectorAll<HTMLElement>('.tr-word'), container);
+	});
+
+	// Standalone paragraphs (not inside a data-text-flow)
 	document.querySelectorAll<HTMLElement>('.text-reveal').forEach(el => {
-		const text = el.textContent || '';
-		el.innerHTML = text
-			.split(/(\s+)/)
-			.map(part =>
-				part.trim() ? `<span class="tr-word">${part}</span>` : part,
-			)
-			.join('');
-
-		const words = el.querySelectorAll<HTMLElement>('.tr-word');
-
-		const tl = gsap.timeline({
-			scrollTrigger: {
-				trigger: el,
-				start: 'top 82%',
-				end: 'bottom 22%',
-				scrub: 1.5,
-			},
-		});
-
-		tl.fromTo(
-			words,
-			{ color: 'rgba(245, 240, 230, 0.15)' },
-			{ color: 'rgba(245, 240, 230, 0.9)', stagger: 0.06, ease: 'none' },
-		);
+		if (el.closest('[data-text-flow]')) return;
+		splitWords(el);
+		animateWords(el.querySelectorAll<HTMLElement>('.tr-word'), el);
 	});
 }
 
