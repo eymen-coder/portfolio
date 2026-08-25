@@ -31,7 +31,7 @@ const letters = name.split('').map((ch) => (ch === ' ' ? ' ' : ch));
 			class="menu-trigger flex items-center gap-3 text-sm font-medium text-ink"
 		>
 			<span class="hidden sm:inline">Menü</span>
-			<span class="relative flex h-9 w-9 items-center justify-center rounded-full border border-line">
+			<span class="relative flex h-11 w-11 items-center justify-center rounded-full border border-line">
 				<span class="bar bar-1"></span>
 				<span class="bar bar-2"></span>
 			</span>
@@ -76,11 +76,16 @@ const letters = name.split('').map((ch) => (ch === ' ' ? ' ' : ch));
 	const panel = document.getElementById('menu-panel');
 	const backdrop = document.getElementById('menu-backdrop');
 
-	function closeMenu() {
+	const panelLinks = panel
+		? Array.from(panel.querySelectorAll<HTMLAnchorElement>('a'))
+		: [];
+
+	function closeMenu(returnFocus = false) {
 		toggle?.setAttribute('aria-expanded', 'false');
 		panel?.classList.remove('is-open');
 		backdrop?.classList.remove('opacity-100');
 		backdrop?.classList.add('opacity-0', 'pointer-events-none');
+		if (returnFocus) toggle?.focus();
 	}
 
 	function openMenu() {
@@ -88,6 +93,8 @@ const letters = name.split('').map((ch) => (ch === ' ' ? ' ' : ch));
 		panel?.classList.add('is-open');
 		backdrop?.classList.add('opacity-100');
 		backdrop?.classList.remove('opacity-0', 'pointer-events-none');
+		// Fokus ins Panel bewegen (Barrierefreiheit / Tastaturnutzung)
+		requestAnimationFrame(() => panelLinks[0]?.focus());
 	}
 
 	toggle?.addEventListener('click', (event) => {
@@ -97,14 +104,31 @@ const letters = name.split('').map((ch) => (ch === ' ' ? ' ' : ch));
 		else openMenu();
 	});
 
-	panel?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+	panel?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => closeMenu()));
 
 	document.addEventListener('click', (event) => {
 		if (!panel?.contains(event.target as Node) && event.target !== toggle) closeMenu();
 	});
 
 	document.addEventListener('keydown', (event) => {
-		if (event.key === 'Escape') closeMenu();
+		const isOpen = toggle?.getAttribute('aria-expanded') === 'true';
+		if (event.key === 'Escape' && isOpen) {
+			closeMenu(true);
+			return;
+		}
+		// Focus-Trap: Tab bleibt innerhalb des offenen Menüs
+		if (event.key === 'Tab' && isOpen && panelLinks.length) {
+			const first = panelLinks[0];
+			const last = panelLinks[panelLinks.length - 1];
+			const active = document.activeElement;
+			if (event.shiftKey && active === first) {
+				event.preventDefault();
+				last.focus();
+			} else if (!event.shiftKey && active === last) {
+				event.preventDefault();
+				first.focus();
+			}
+		}
 	});
 
 	const navLinks = document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]');

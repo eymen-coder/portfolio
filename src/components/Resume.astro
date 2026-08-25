@@ -87,7 +87,7 @@ const cardBorder: Record<EventType, string> = {
 const getPeriodColor = (item: { type: EventType; active?: boolean }) => {
 	if (item.type === 'cert') return 'text-nebula';
 	if (item.active) return 'text-accent';
-	return 'text-ink/40';
+	return 'text-ink/55';
 };
 ---
 
@@ -96,7 +96,7 @@ const getPeriodColor = (item: { type: EventType; active?: boolean }) => {
 		<div class="flex flex-wrap items-start justify-between gap-6">
 			<div>
 				<h2 class="text-3xl font-semibold tracking-tight text-ink">Lebenslauf</h2>
-				<p class="mt-2 hidden text-sm text-ink/40 sm:block">Hover über die Stationen für Details.</p>
+				<p class="mt-2 hidden text-sm text-ink/55 sm:block">Hover über die Stationen für Details.</p>
 			</div>
 			<a
 				href={resumePdf}
@@ -128,7 +128,7 @@ const getPeriodColor = (item: { type: EventType; active?: boolean }) => {
 								>
 									<span class={`text-[10px] font-medium ${getPeriodColor(item)}`}>{item.period}</span>
 									<p class="mt-1 text-sm font-semibold leading-snug text-ink">{item.title}</p>
-									<p class="mt-0.5 text-[11px] text-ink/40">{item.org}</p>
+									<p class="mt-0.5 text-[11px] text-ink/55">{item.org}</p>
 									{item.bullets && (
 										<ul class="mt-3 space-y-1.5">
 											{item.bullets.map((b) => (
@@ -188,7 +188,7 @@ const getPeriodColor = (item: { type: EventType; active?: boolean }) => {
 							<h3 class={`mt-1 font-semibold ${item.active ? 'text-ink' : 'text-ink/80'}`}>
 								{item.title}
 							</h3>
-							<p class="mt-0.5 text-xs text-ink/40">{item.org}</p>
+							<p class="mt-0.5 text-xs text-ink/55">{item.org}</p>
 
 							{item.bullets && (
 								<ul class="mt-3 space-y-1.5">

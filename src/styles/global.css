@@ -412,4 +412,7 @@ body.header-hidden .subnav-below-header {
 		opacity: 1 !important;
 	}
 
+	.animate-ping {
+		animation: none !important;
+	}
 }

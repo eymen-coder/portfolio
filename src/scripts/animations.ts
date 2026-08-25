@@ -3,6 +3,13 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Respektiert die System-Einstellung "Bewegung reduzieren".
+// Bei true werden alle GSAP-Effekte übersprungen; alle Inhalte
+// sind per Default (ohne JS-Hiding) voll sichtbar und lesbar.
+const reduceMotion =
+	typeof window !== 'undefined' &&
+	window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 // ── HERO PREPARE (runs immediately so initial states are set) ────────────────
 function prepareHero() {
 	const h1 = document.querySelector('.hero-text') as HTMLElement | null;
@@ -157,6 +164,7 @@ function initApproach() {
 
 // ── BOOT ─────────────────────────────────────────────────────────────────────
 function boot() {
+	if (reduceMotion) return; // Inhalte bleiben statisch & sichtbar
 	prepareHero();
 	initCounters();
 	initTilt();
@@ -171,10 +179,10 @@ if (document.readyState === 'loading') {
 	boot();
 }
 
-if (document.getElementById('preloader')) {
-	window.addEventListener('preloader:done', animateHero, { once: true });
-} else {
-	if (document.readyState === 'loading') {
+if (!reduceMotion) {
+	if (document.getElementById('preloader')) {
+		window.addEventListener('preloader:done', animateHero, { once: true });
+	} else if (document.readyState === 'loading') {
 		document.addEventListener('DOMContentLoaded', animateHero);
 	} else {
 		animateHero();
