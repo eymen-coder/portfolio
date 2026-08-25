@@ -7,6 +7,8 @@ export interface Project {
 	image?: string;
 	download?: boolean;
 	highlight?: string;
+	featured?: boolean;
+	learning?: string;
 }
 
 const thesisPdf = '/eymen-guelmez-projektthesis-sap-s4hana.pdf';
@@ -21,6 +23,9 @@ export const projects: Project[] = [
 		repo: 'https://github.com/eymen-coder/urlaubsantrag-tool',
 		image: '/project-urlaubsantrag.jpg',
 		highlight: '3 Rollen · Row-Level-Security · Live-Demo',
+		featured: true,
+		learning:
+			'Hier habe ich zum ersten Mal Zugriffsrechte konsequent auf Datenbank-Ebene (Row-Level-Security) statt im Frontend gelöst — und gemerkt, wie viel sicherer und wartbarer das ist, als Logik nur im Client zu verstecken.',
 	},
 	{
 		title: 'SAP S/4HANA Case Study',
@@ -30,6 +35,8 @@ export const projects: Project[] = [
 		link: '/case-study',
 		image: '/case-study-preview.jpg',
 		highlight: 'Ist-Analyse bis Soll-Konzept mit Projektplan',
+		learning:
+			'Ich habe gelernt, ein Projekt nicht nur technisch, sondern von der Prozess- und Stakeholder-Seite zu denken — Zeitplan, Risiken und Beteiligte gehören genauso dazu wie die Lösung selbst.',
 	},
 	{
 		title: 'KI-Support-Assistent',

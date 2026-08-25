@@ -1,0 +1,32 @@
+---
+interface Testimonial {
+	quote: string;
+	name: string;
+	role: string;
+}
+
+// Sobald hier ein echtes Zitat eingetragen wird, erscheint der Bereich
+// automatisch auf der Seite. Beispiel (auskommentiert):
+//   { quote: 'Eymen hat bei uns ... und dabei ... gezeigt.', name: 'Max Mustermann', role: 'Teamleiter E-Commerce, rabeconcept' },
+const testimonials: Testimonial[] = [];
+---
+
+{
+	testimonials.length > 0 && (
+		<section id="stimmen" class="reveal mx-auto max-w-5xl scroll-mt-24 px-6 py-24">
+			<h2 class="text-3xl font-semibold tracking-tight text-ink">Stimmen</h2>
+			<div class="mt-10 grid gap-6 sm:grid-cols-2">
+				{testimonials.map((t) => (
+					<figure class="rounded-2xl border border-line bg-surface/50 p-8">
+						<div class="text-3xl leading-none text-accent/50">“</div>
+						<blockquote class="mt-2 text-lg leading-relaxed text-ink/80">{t.quote}</blockquote>
+						<figcaption class="mt-6 border-t border-line pt-4">
+							<span class="font-semibold text-ink">{t.name}</span>
+							<span class="mt-0.5 block text-sm text-ink/50">{t.role}</span>
+						</figcaption>
+					</figure>
+				))}
+			</div>
+		</section>
+	)
+}

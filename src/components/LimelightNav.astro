@@ -43,11 +43,12 @@ const icons: Record<string, string> = {
 					stroke-width="2"
 					stroke-linecap="round"
 					stroke-linejoin="round"
-					class="ll-icon h-5 w-5 text-ink opacity-40 transition-opacity duration-200"
+					class="ll-icon h-5 w-5 shrink-0 text-ink opacity-40 transition-opacity duration-200"
 					set:html={icons[it.icon]}
 				/>
+				<span class="ll-label">{it.label}</span>
 				<span
-					class="ll-tooltip pointer-events-none absolute top-full left-1/2 mt-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-line bg-surface px-2 py-1 text-[11px] font-medium text-ink opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+					class="ll-tooltip pointer-events-none absolute top-full left-1/2 mt-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-line bg-surface px-2 py-1 text-[11px] font-medium text-ink opacity-0 transition-opacity duration-200 group-hover:opacity-100 md:hidden"
 				>
 					{it.label}
 				</span>
@@ -95,6 +96,31 @@ const icons: Record<string, string> = {
 	.ll-item.is-active .ll-icon {
 		opacity: 1;
 		color: var(--color-accent);
+	}
+
+	/* Aktives Label nur auf Desktop inline zeigen (Mobile bleibt icon-only) */
+	.ll-label {
+		display: none;
+	}
+
+	@media (min-width: 768px) {
+		.ll-label {
+			display: inline-block;
+			max-width: 0;
+			overflow: hidden;
+			white-space: nowrap;
+			opacity: 0;
+			font-size: 0.8125rem;
+			font-weight: 500;
+			color: var(--color-accent);
+			transition: opacity 0.2s ease;
+		}
+
+		.ll-item.is-active .ll-label {
+			max-width: 9rem;
+			opacity: 1;
+			margin-left: 0.45rem;
+		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
